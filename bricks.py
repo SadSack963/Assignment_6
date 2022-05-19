@@ -23,6 +23,9 @@ class Brick(Turtle):
             self.color_index = 0
         self.fillcolor(c.COLORS[self.color_index])
 
+    def destroy(self):
+        self.hideturtle()
+
 
 def create_bricks(layout):
     rows = len(layout)
