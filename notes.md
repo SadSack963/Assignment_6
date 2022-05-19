@@ -38,7 +38,9 @@
 1. Create background - fancy graphics 
 2. Different layouts for levels
 3. Design bricks - some bricks with special properties \
-&emsp; Multiple hits\
+&emsp; Indestructible bricks used as barriers \
+&emsp; Multiple hits to destroy \
+&emsp; Explosive bricks \
 &emsp; Drop bombs \
 &emsp; &emsp; Kill player \
 &emsp; &emsp; Deduct lives \
@@ -51,8 +53,7 @@
 &emsp; &emsp; Add gun to paddle for a time \
 &emsp; &emsp; Ball can punch through bricks for a time \
 &emsp; &emsp; Make paddle larger for a time \
-&emsp; &emsp; Slow ball for a time \
-&emsp; Explosive bricks 
+&emsp; &emsp; Slow ball for a time
 4. Design player paddle - use multiple turtles. 
 5. Detect ball collision with paddle \
 &emsp; Angle of bounce depends upon which turtle is contacted 

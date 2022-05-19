@@ -38,7 +38,12 @@ while go:
     # ToDo: Consider running this in a different thread
     # special_bricks(brick_array)
 
-    # ToDo: Detect collision with paddle
+    # Detect collision with paddle
+    # ToDo: Maybe use different segments to change the bounce angle
+    if ball.ycor() < (40 - c.HEIGHT / 2) and (ball.heading() < 0 or ball.heading() > 180):
+        for segment in paddle.segments:
+            if ball.distance(segment) <= 25:
+                ball.bounce_y()
 
     # ToDo: Detect collision with bricks
 
