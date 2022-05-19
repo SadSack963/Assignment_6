@@ -23,17 +23,22 @@ screen.onkeypress(paddle.move_right, "d")
 screen.onkeypress(paddle.move_right, "Right")
 screen.listen()
 
-layout = level_layout.levels[2]["layout"]
+level = 1
+layout = level_layout.levels[level]["layout"]
 brick_array = create_bricks(layout)
 # print(brick_array)  # {(0, 0): <bricks.Brick object at 0x00000271BB356E00>, ...}
 
 ball = Ball()
+
 go = True
 while go:
     ball.move()
     for brick in brick_array.values():
-        if brick.style == 2:
-            brick.cycle_color()
+        match brick.style:
+            case 2:
+                brick.cycle_color()
+            case 3:
+                brick.fillcolor("red")
     screen.update()
     sleep(0.01)
 
