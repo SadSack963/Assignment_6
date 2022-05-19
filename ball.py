@@ -14,6 +14,11 @@ class Ball(Turtle):
 
     def move(self):
         self.forward(self.velocity)
+        # Bounce at screen edges
+        if self.xcor() >= 290 or self.xcor() <= -290:
+            self.bounce_x()
+        if self.ycor() >= 190 or self.ycor() <= -190:
+            self.bounce_y()
 
     def bounce_x(self):
         self.setheading(180 - self.heading())
@@ -35,10 +40,6 @@ if __name__ == "__main__":
 
     go = True
     while go:
-        if ball.xcor() >= 290 or ball.xcor() <= -290:
-            ball.bounce_x()
-        if ball.ycor() >= 190 or ball.ycor() <= -190:
-            ball.bounce_y()
         ball.move()
         screen.update()
         sleep(0.01)

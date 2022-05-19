@@ -29,10 +29,6 @@ brick_array = create_bricks(brick_types)
 ball = Ball()
 go = True
 while go:
-    if ball.xcor() >= 290 or ball.xcor() <= -290:
-        ball.bounce_x()
-    if ball.ycor() >= 190 or ball.ycor() <= -190:
-        ball.bounce_y()
     ball.move()
     screen.update()
     sleep(0.01)
