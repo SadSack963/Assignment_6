@@ -1,3 +1,5 @@
+import constants as c
+
 from turtle import Turtle
 from time import sleep
 
@@ -15,9 +17,9 @@ class Ball(Turtle):
     def move(self):
         self.forward(self.velocity)
         # Bounce at screen edges
-        if self.xcor() >= 290 or self.xcor() <= -290:
+        if self.xcor() >= c.EDGE_LR or self.xcor() <= -c.EDGE_LR:
             self.bounce_x()
-        if self.ycor() >= 190 or self.ycor() <= -190:
+        if self.ycor() >= c.EDGE_TB or self.ycor() <= -c.EDGE_TB:
             self.bounce_y()
 
     def bounce_x(self):
@@ -32,7 +34,7 @@ if __name__ == "__main__":
 
     screen = Screen()
     screen.colormode(255)
-    screen.setup(width=620, height=405)
+    screen.setup(width=c.WIDTH, height=c.HEIGHT)
     screen.bgcolor("black")
     screen.tracer(0)
 

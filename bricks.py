@@ -1,36 +1,43 @@
+import constants as c
+
 from turtle import Turtle
 from random import randint
 
-ROWS = 5
-COLUMNS = 10
-STRETCH = 3
-
 
 class Brick(Turtle):
-    def __init__(self, color, location, row, col):
+    def __init__(self, color_index, location, row, col):
         super(Brick, self).__init__()
-        self.fillcolor(color)
+        self.color_index = color_index
+        self.fillcolor(c.COLORS[self.color_index])
         self.pencolor("white")
         self.shape("square")
-        self.shapesize(stretch_len=STRETCH)
+        self.shapesize(stretch_len=c.STRETCH)
         self.penup()
         self.goto(location)
-        self.style = 0
+        self.style = 2
         self.id = (row, col)
+
+    def cycle_color(self):
+        self.color_index += 1
+        if self.color_index == len(c.COLORS):
+            self.color_index = 0
+        self.fillcolor(c.COLORS[self.color_index])
 
 
 def create_bricks(style):
     # Store the bricks in a dictionary, using (row, col) as the key
     bricks = {}
-    for row in range(ROWS):
-        for column in range(COLUMNS):
+    for row in range(c.ROWS):
+        for column in range(c.COLUMNS):
             brick = Brick(
-                color=(randint(0, 255), randint(0, 255), randint(0, 255)),
-                location=(-274 + column * 20 * STRETCH, 190 - row * 20),
+                color_index=150,
+                location=(25 - c.EDGE_LR + column * 20 * c.STRETCH, c.EDGE_TB - row * 20),
                 row=row,
                 col=column,
             )
-            brick.style = style[row, column]
+            brick.style = style[row][column]
+            if brick.style == 0:
+                brick.hideturtle()
             bricks[brick.id] = brick
     return bricks
 
@@ -42,17 +49,17 @@ if __name__ == "__main__":
 
     screen = Screen()
     screen.colormode(255)
-    screen.setup(width=620, height=405)
+    screen.setup(width=c.WIDTH, height=c.HEIGHT)
     screen.bgcolor("black")
     screen.tracer(0)
 
-    brick_types = np.ones((ROWS, COLUMNS))
+    brick_types = np.ones((c.ROWS, c.COLUMNS))
     brick_array = create_bricks(brick_types)
     screen.update()
 
     # Remove some random bricks
     for n in range(30):
-        brick_array[randint(0, 4), randint(0, 9)].hideturtle()
+        brick_array[randint(0, c.ROWS - 1), randint(0, c.COLUMNS - 1)].hideturtle()
         screen.update()
         sleep(1)
 
