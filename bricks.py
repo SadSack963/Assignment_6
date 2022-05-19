@@ -28,6 +28,7 @@ if __name__ == "__main__":
     screen.bgcolor("black")
     screen.tracer(0)
 
+    # Store the bricks in a dictionary, using (row, col) as the key
     bricks = {}
     for row in range(ROWS):
         for column in range(COLUMNS):
@@ -40,6 +41,7 @@ if __name__ == "__main__":
             bricks[brick.id] = brick
 
     screen.update()
-    print(bricks)
-
+    # print(bricks)
+    """{(0, 0): <__main__.Brick object at 0x000001FD847DBF70>, ...}"""
+    
     screen.exitonclick()
