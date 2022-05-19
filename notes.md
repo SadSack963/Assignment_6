@@ -59,3 +59,4 @@
 6. Detect ball collision with brick \
 &emsp; Angle of bounce depends upon which side of the brick is hit, \
 &emsp; and direction of ball travel 
+7. Create Algorithm to auto-generate brick patterns
