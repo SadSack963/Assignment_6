@@ -47,7 +47,7 @@ def create_bricks(layout):
 if __name__ == "__main__":
     from turtle import Screen
     from time import sleep
-    import numpy as np
+    import level_layout
 
     screen = Screen()
     screen.colormode(255)
@@ -55,13 +55,15 @@ if __name__ == "__main__":
     screen.bgcolor("black")
     screen.tracer(0)
 
-    brick_types = np.ones((c.ROWS, c.COLUMNS))
-    brick_array = create_bricks(brick_types)
+    level = 1
+    layout = level_layout.levels[level]["layout"]
+    brick_array = create_bricks(layout)
     screen.update()
 
+    rows = len(layout)
     # Remove some random bricks
     for n in range(30):
-        brick_array[randint(0, c.ROWS - 1), randint(0, c.COLUMNS - 1)].hideturtle()
+        brick_array[randint(0, rows - 1), randint(0, c.COLUMNS - 1)].hideturtle()
         screen.update()
         sleep(1)
 

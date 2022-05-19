@@ -3,10 +3,9 @@ from ball import Ball
 from paddle import Paddle
 import constants as c
 import level_layout
+from background import draw_gradient
 
-from turtle import Turtle, Screen
-import numpy as np
-from random import randint
+from turtle import Screen
 from time import sleep
 
 screen = Screen()
@@ -27,6 +26,9 @@ level = 1
 layout = level_layout.levels[level]["layout"]
 brick_array = create_bricks(layout)
 # print(brick_array)  # {(0, 0): <bricks.Brick object at 0x00000271BB356E00>, ...}
+start_color = level_layout.levels[level]["start_color"]
+target_color = level_layout.levels[level]["target_color"]
+draw_gradient(start_color, target_color)
 
 ball = Ball()
 
