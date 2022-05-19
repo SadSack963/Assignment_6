@@ -44,6 +44,18 @@ def create_bricks(layout):
     return bricks
 
 
+def special_bricks(bricks):
+    pass
+    # ToDo: Consider running this in a different thread
+    for brick in bricks.values():
+        if brick.isvisible():
+            match brick.style:
+                case 2:
+                    brick.cycle_color()
+                case 3:
+                    brick.fillcolor("red")
+
+
 if __name__ == "__main__":
     from turtle import Screen
     from time import sleep

@@ -1,4 +1,4 @@
-from bricks import create_bricks
+from bricks import create_bricks, special_bricks
 from ball import Ball
 from paddle import Paddle
 import constants as c
@@ -28,19 +28,20 @@ brick_array = create_bricks(layout)
 # print(brick_array)  # {(0, 0): <bricks.Brick object at 0x00000271BB356E00>, ...}
 start_color = level_layout.levels[level]["start_color"]
 target_color = level_layout.levels[level]["target_color"]
-draw_gradient(start_color, target_color)
+# draw_gradient(start_color, target_color)
 
 ball = Ball()
 
 go = True
 while go:
     ball.move()
-    for brick in brick_array.values():
-        match brick.style:
-            case 2:
-                brick.cycle_color()
-            case 3:
-                brick.fillcolor("red")
+    # ToDo: Consider running this in a different thread
+    # special_bricks(brick_array)
+
+    # ToDo: Detect collision with paddle
+
+    # ToDo: Detect collision with bricks
+
     screen.update()
     sleep(0.01)
 
