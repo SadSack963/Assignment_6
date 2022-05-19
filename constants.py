@@ -5,7 +5,6 @@ EDGE_LR = WIDTH / 2 - 12
 EDGE_TB = HEIGHT / 2 - 12
 
 # Bricks
-ROWS = 5
 COLUMNS = 10
 STRETCH = 3
 COLORS = ["alice blue", "AliceBlue", "antique white", "AntiqueWhite", "AntiqueWhite1", "AntiqueWhite2", "AntiqueWhite3",

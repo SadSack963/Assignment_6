@@ -24,8 +24,8 @@ def draw_gradient(start_color, target_color):
 if __name__ == "__main__":
     from turtle import Turtle, Screen
 
-    START_COLOR = (253, 0, 155)  # (0.60156, 0.0, 0.99218)
-    TARGET_COLOR = (60, 222, 80)  # (0.86328, 0.47656, 0.31250)
+    START_COLOR = (253, 0, 155)
+    TARGET_COLOR = (60, 222, 80)
     WIDTH = 600
     HEIGHT = 400
 

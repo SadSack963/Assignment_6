@@ -24,10 +24,12 @@ class Brick(Turtle):
         self.fillcolor(c.COLORS[self.color_index])
 
 
-def create_bricks(style):
+def create_bricks(layout):
+    rows = len(layout)
+
     # Store the bricks in a dictionary, using (row, col) as the key
     bricks = {}
-    for row in range(c.ROWS):
+    for row in range(rows):
         for column in range(c.COLUMNS):
             brick = Brick(
                 color_index=150,
@@ -35,7 +37,7 @@ def create_bricks(style):
                 row=row,
                 col=column,
             )
-            brick.style = style[row][column]
+            brick.style = layout[row][column]
             if brick.style == 0:
                 brick.hideturtle()
             bricks[brick.id] = brick

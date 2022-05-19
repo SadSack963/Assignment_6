@@ -23,8 +23,8 @@ screen.onkeypress(paddle.move_right, "d")
 screen.onkeypress(paddle.move_right, "Right")
 screen.listen()
 
-brick_types = level_layout.levels[1]
-brick_array = create_bricks(brick_types)
+layout = level_layout.levels[2]["layout"]
+brick_array = create_bricks(layout)
 # print(brick_array)  # {(0, 0): <bricks.Brick object at 0x00000271BB356E00>, ...}
 
 ball = Ball()
