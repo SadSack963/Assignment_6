@@ -4,7 +4,7 @@ from paddle import Paddle
 import constants as c
 import level_layout
 
-from turtle import Screen, getcanvas
+from turtle import Screen
 
 
 def new_level(current_level):
@@ -67,24 +67,15 @@ screen.tracer(0)
 
 paddle = Paddle()
 
-# getcanvas().bind("a", paddle.move_left)
-# getcanvas().bind("<Left>", paddle.move_left)
-# getcanvas().bind("d", paddle.move_right)
-# getcanvas().bind("<Right>", paddle.move_right)
-
-# screen.onkeypress(paddle.move_left, "a")
-# screen.onkeypress(paddle.move_left, "Left")
-# screen.onkeypress(paddle.move_right, "d")
-# screen.onkeypress(paddle.move_right, "Right")
-
-screen.onkeypress(lambda : paddle.start_repeat(paddle.move_left), "a")
+# Fast Key Repeat bindings
+screen.onkeypress(lambda: paddle.start_repeat(paddle.move_left), "a")
 screen.onkeyrelease(paddle.stop_repeat, "a")
-screen.onkeypress(lambda : paddle.start_repeat(paddle.move_left), "Left")
+screen.onkeypress(lambda: paddle.start_repeat(paddle.move_left), "Left")
 screen.onkeyrelease(paddle.stop_repeat, "Left")
 
-screen.onkeypress(lambda : paddle.start_repeat(paddle.move_right), "d")
+screen.onkeypress(lambda: paddle.start_repeat(paddle.move_right), "d")
 screen.onkeyrelease(paddle.stop_repeat, "d")
-screen.onkeypress(lambda : paddle.start_repeat(paddle.move_right), "Right")
+screen.onkeypress(lambda: paddle.start_repeat(paddle.move_right), "Right")
 screen.onkeyrelease(paddle.stop_repeat, "Right")
 
 
@@ -99,6 +90,7 @@ ball = Ball()
 repeating = False
 count_1 = 0
 count_2 = 0
+game_speed = 300000
 
 go = True
 while go:
@@ -128,7 +120,7 @@ while go:
     screen.update()
 
     # Loop to control game speed
-    for _ in range(300000):
+    for _ in range(game_speed):
         pass
 
 screen.update()

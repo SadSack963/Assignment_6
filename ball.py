@@ -25,7 +25,7 @@ class Ball(Turtle):
         # Bounce at screen edges
         if self.xcor() >= c.EDGE_LR or self.xcor() <= -c.EDGE_LR:
             self.bounce_x()
-        if self.ycor() >= c.EDGE_TB or self.ycor() <= -c.EDGE_TB:
+        if (self.ycor() >= c.EDGE_TB and 0 < self.heading() < 180) or self.ycor() <= -c.EDGE_TB:
             self.bounce_y()
 
     def bounce_x(self):

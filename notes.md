@@ -54,6 +54,7 @@
 &emsp; &emsp; Ball can punch through bricks for a time \
 &emsp; &emsp; Make paddle larger for a time \
 &emsp; &emsp; Slow ball for a time
+&emsp; &emsp; Add a row of bricks below the paddle
 4. Design player paddle - use multiple turtles. 
 5. Detect ball collision with paddle \
 &emsp; Angle of bounce depends upon which turtle is contacted 
