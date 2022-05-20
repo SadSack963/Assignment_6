@@ -17,11 +17,11 @@ class Brick(Turtle):
         self.style = 2
         self.id = (row, col)
 
-    def cycle_color(self):
+    def cycle_color(self, colors: list):
         self.color_index += 1
-        if self.color_index == len(c.COLORS):
+        if self.color_index == len(colors):
             self.color_index = 0
-        self.fillcolor(c.COLORS[self.color_index])
+        self.fillcolor(c.COLORS_CYCLE[self.color_index])
 
     def destroy(self):
         self.hideturtle()
@@ -36,7 +36,7 @@ def create_bricks(layout):
         for column in range(c.COLUMNS):
             if layout[row][column] > 0:
                 brick = Brick(
-                    color_index=150,
+                    color_index=0,
                     location=(25 - c.EDGE_LR + column * 20 * c.STRETCH, c.EDGE_TB - row * 20),
                     row=row,
                     col=column,
@@ -52,7 +52,7 @@ def special_bricks(bricks):
         if brick.isvisible():
             match brick.style:
                 case 2:
-                    brick.cycle_color()
+                    brick.cycle_color(c.COLORS_CYCLE)
                 case 3:
                     brick.fillcolor("red")
 

@@ -61,3 +61,5 @@
 &emsp; Angle of bounce depends upon which side of the brick is hit, \
 &emsp; and direction of ball travel 
 7. Create Algorithm to auto-generate brick patterns
+8. Scoring and messages
+9. Maybe a fancy screen when you win

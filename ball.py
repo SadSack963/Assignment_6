@@ -7,9 +7,15 @@ from time import sleep
 class Ball(Turtle):
     def __init__(self):
         super(Ball, self).__init__()
-        self.color("silver")
+        self.color("grey90", "grey20")
         self.shape("circle")
         self.penup()
+        self.goto(0, 0)
+        self.setheading(-45)
+        self.velocity = 5
+
+    def reset_state(self):
+        self.showturtle()
         self.goto(0, 0)
         self.setheading(-45)
         self.velocity = 5

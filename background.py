@@ -25,6 +25,13 @@ def draw_gradient(start_color, target_color):
         direction *= -1  # Change the turtle direction of travel
 
 
+# GRADIENT REALLY SLOWS DOWN BALL ANIMATION
+# =========================================
+# start_color = level_layout.levels[next_level]["start_color"]
+# target_color = level_layout.levels[next_level]["target_color"]
+# draw_gradient(start_color, target_color)
+
+
 if __name__ == "__main__":
     from turtle import Screen
 
