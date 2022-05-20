@@ -4,7 +4,7 @@ from paddle import Paddle
 import constants as c
 import level_layout
 
-from turtle import Screen
+from turtle import Screen, getcanvas
 
 
 def new_level(current_level):
@@ -44,9 +44,10 @@ def ball_paddle_collision():
                 break
 
 
-def ball_brick_collision(current_bricks):
+def ball_brick_collision():
     # -- This loop runs in about 500us regardless of number of bricks --
     win = True
+    current_bricks = brick_array.copy()
     for brick in brick_array.values():
         if brick.isvisible():
             # Beat Level
@@ -66,17 +67,32 @@ screen.tracer(0)
 
 paddle = Paddle()
 
-screen.onkeypress(paddle.move_left, "a")
-screen.onkeypress(paddle.move_left, "Left")
-screen.onkeypress(paddle.move_right, "d")
-screen.onkeypress(paddle.move_right, "Right")
+# getcanvas().bind("a", paddle.move_left)
+# getcanvas().bind("<Left>", paddle.move_left)
+# getcanvas().bind("d", paddle.move_right)
+# getcanvas().bind("<Right>", paddle.move_right)
+
+# screen.onkeypress(paddle.move_left, "a")
+# screen.onkeypress(paddle.move_left, "Left")
+# screen.onkeypress(paddle.move_right, "d")
+# screen.onkeypress(paddle.move_right, "Right")
+
+screen.onkeypress(lambda : paddle.start_repeat(paddle.move_left), "a")
+screen.onkeyrelease(paddle.stop_repeat, "a")
+
+screen.onkeypress(lambda : paddle.start_repeat(paddle.move_right), "d")
+screen.onkeyrelease(paddle.stop_repeat, "d")
+
+
 screen.listen()
+
 
 level = 0
 level, brick_array = new_level(level)
 
 ball = Ball()
 
+repeating = False
 count_1 = 0
 count_2 = 0
 
@@ -91,7 +107,7 @@ while go:
     ball_paddle_collision()
 
     # Detect collision with bricks
-    brick_array, win = ball_brick_collision(brick_array)
+    brick_array, win = ball_brick_collision()
 
     # Beat Level - start new level
     if win:

@@ -1,3 +1,5 @@
+import turtle
+
 import constants as c
 
 from turtle import Turtle
@@ -6,6 +8,9 @@ from time import sleep
 
 class Paddle:
     def __init__(self):
+        self.repeat = False
+        self.repeat_rate = 20  # milliseconds
+        self.screen = turtle.getscreen()
         self.segments = []
         self.create_paddle()
 
@@ -21,13 +26,27 @@ class Paddle:
             segment.id = index
             self.segments.append(segment)
 
+    def start_repeat(self, func):
+        # Smooth fast key repeat
+        # https://stackoverflow.com/questions/44863600/turtle-graphics-keypress-event-not-repeating
+        if not self.repeat:
+            self.repeat = True
+            func()
+
+    def stop_repeat(self):
+        self.repeat = False
+
     def move_left(self):
         if self.segments[0].xcor() > 7 - c.EDGE_LR:
             self.move(180)
+        if self.repeat:
+            self.screen.ontimer(self.move_left, self.repeat_rate)
 
     def move_right(self):
         if self.segments[-1].xcor() < c.EDGE_LR - 8:
             self.move(0)
+        if self.repeat:
+            self.screen.ontimer(self.move_right, self.repeat_rate)
 
     def move(self, heading):
         for segment in self.segments:
