@@ -79,9 +79,13 @@ paddle = Paddle()
 
 screen.onkeypress(lambda : paddle.start_repeat(paddle.move_left), "a")
 screen.onkeyrelease(paddle.stop_repeat, "a")
+screen.onkeypress(lambda : paddle.start_repeat(paddle.move_left), "Left")
+screen.onkeyrelease(paddle.stop_repeat, "Left")
 
 screen.onkeypress(lambda : paddle.start_repeat(paddle.move_right), "d")
 screen.onkeyrelease(paddle.stop_repeat, "d")
+screen.onkeypress(lambda : paddle.start_repeat(paddle.move_right), "Right")
+screen.onkeyrelease(paddle.stop_repeat, "Right")
 
 
 screen.listen()
