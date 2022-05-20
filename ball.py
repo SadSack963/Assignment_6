@@ -25,8 +25,9 @@ class Ball(Turtle):
     def bounce_x(self):
         self.setheading(180 - self.heading())
 
-    def bounce_y(self):
-        self.setheading(-self.heading())
+    def bounce_y(self, modifier=0):
+        new_angle = - (modifier * 5 + self.heading())
+        self.setheading(new_angle)
 
 
 if __name__ == "__main__":

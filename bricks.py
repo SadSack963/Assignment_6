@@ -34,21 +34,19 @@ def create_bricks(layout):
     bricks = {}
     for row in range(rows):
         for column in range(c.COLUMNS):
-            brick = Brick(
-                color_index=150,
-                location=(25 - c.EDGE_LR + column * 20 * c.STRETCH, c.EDGE_TB - row * 20),
-                row=row,
-                col=column,
-            )
-            brick.style = layout[row][column]
-            if brick.style == 0:
-                brick.hideturtle()
-            bricks[brick.id] = brick
+            if layout[row][column] > 0:
+                brick = Brick(
+                    color_index=150,
+                    location=(25 - c.EDGE_LR + column * 20 * c.STRETCH, c.EDGE_TB - row * 20),
+                    row=row,
+                    col=column,
+                )
+                brick.style = layout[row][column]
+                bricks[brick.id] = brick
     return bricks
 
 
 def special_bricks(bricks):
-    pass
     # ToDo: Consider running this in a different thread
     for brick in bricks.values():
         if brick.isvisible():
