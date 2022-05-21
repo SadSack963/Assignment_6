@@ -1,11 +1,11 @@
 import constants as c
 
 from turtle import Turtle
-from random import randint
 
 
 class Brick(Turtle):
     def __init__(self, color_index, location, row, col):
+        # Main brick
         super(Brick, self).__init__()
         self.color_index = color_index
         self.fillcolor(c.COLORS[self.color_index])
@@ -16,6 +16,25 @@ class Brick(Turtle):
         self.goto(location)
         self.style = 2
         self.id = (row, col)
+
+        # Create left and Right edges of brick for collision detection and x bounce
+        # Left section
+        self.left = Turtle()
+        self.left.color("yellow")
+        self.left.shape("square")
+        self.left.shapesize(stretch_len=c.STRETCH / 12)  # 5 pixels wide
+        self.left.penup()
+        self.left.goto(location[0] - 28 + c.STRETCH / 12, location[1])
+        self.left.hideturtle()
+
+        # Right section
+        self.right = Turtle()
+        self.right.color("blue")
+        self.right.shape("square")
+        self.right.shapesize(stretch_len=c.STRETCH / 12)  # 5 pixels wide
+        self.right.penup()
+        self.right.goto(location[0] + 28 - c.STRETCH / 12, location[1])
+        self.right.hideturtle()
 
     def cycle_color(self, colors: list):
         self.color_index += 1
@@ -47,7 +66,7 @@ def create_bricks(layout):
 
 
 def special_bricks(bricks):
-    # ToDo: Consider running this in a different thread
+    # ToDo: Types yet to be defined
     for brick in bricks.values():
         if brick.isvisible():
             match brick.style:
@@ -72,13 +91,6 @@ if __name__ == "__main__":
     layout = level_layout.levels[level]["layout"]
     brick_array = create_bricks(layout)
     screen.update()
-
-    rows = len(layout)
-    # Remove some random bricks
-    for n in range(30):
-        brick_array[randint(0, rows - 1), randint(0, c.COLUMNS - 1)].hideturtle()
-        screen.update()
-        sleep(1)
 
     # print(bricks)
     """{(0, 0): <__main__.Brick object at 0x000001FD847DBF70>, ...}"""

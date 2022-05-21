@@ -12,6 +12,7 @@ def new_level(current_level):
     layout = level_layout.levels[next_level]["layout"]
     brick_layout = create_bricks(layout)
     # print(brick_array)  # {(0, 0): <bricks.Brick object at 0x00000271BB356E00>, ...}
+    screen.update()
 
     return next_level, brick_layout
 
@@ -52,10 +53,27 @@ def ball_brick_collision():
         if brick.isvisible():
             # Beat Level
             win = False
-            if ball.distance(brick) <= 30:
+            if ball.distance(brick.left) <= 15:
+                brick.destroy()
+                current_bricks.pop(brick.id)  # Remove the brick from the array
+                if ball.heading() < 90 or ball.heading() > 270:
+                    ball.bounce_x()
+                else:
+                    ball.bounce_y()
+                break  # Prevent hits on multiple bricks
+            if ball.distance(brick.right) <= 15:
+                brick.destroy()
+                current_bricks.pop(brick.id)  # Remove the brick from the array
+                if 90 < ball.heading() < 270:
+                    ball.bounce_x()
+                else:
+                    ball.bounce_y()
+                break  # Prevent hits on multiple bricks
+            if ball.distance(brick) <= 25:
                 brick.destroy()
                 current_bricks.pop(brick.id)  # Remove the brick from the array
                 ball.bounce_y()
+                break  # Prevent hits on multiple bricks
     return current_bricks, win
 
 
@@ -66,6 +84,7 @@ screen.bgcolor("black")
 screen.tracer(0)
 
 paddle = Paddle()
+ball = Ball()
 
 # Fast Key Repeat bindings
 screen.onkeypress(lambda: paddle.start_repeat(paddle.move_left), "a")
@@ -78,16 +97,11 @@ screen.onkeyrelease(paddle.stop_repeat, "d")
 screen.onkeypress(lambda: paddle.start_repeat(paddle.move_right), "Right")
 screen.onkeyrelease(paddle.stop_repeat, "Right")
 
-
 screen.listen()
-
 
 level = 0
 level, brick_array = new_level(level)
 
-ball = Ball()
-
-repeating = False
 count_1 = 0
 count_2 = 0
 game_speed = 300000

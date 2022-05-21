@@ -1,4 +1,10 @@
 levels = {
+    # 0: {"start_color": (253, 0, 155),
+    #     "target_color": (60, 222, 80),
+    #     "layout": [
+    #         [1, 0, 2, 0, 3, 3, 0, 2, 0, 1],
+    #     ],
+    #     },
     1: {"start_color": (253, 0, 155),
         "target_color": (60, 222, 80),
         "layout": [
