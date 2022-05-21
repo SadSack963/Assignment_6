@@ -79,6 +79,12 @@ class Paddle:
             segment.setheading(heading)
             segment.forward(segment.velocity)
 
+    def reset_state(self):
+        for segment in self.segments:
+            segment.goto(segment.id * 20, 50 - c.HEIGHT / 2)
+            segment.setheading(0)
+            segment.velocity = 10
+
 
 if __name__ == "__main__":
     from turtle import Screen
