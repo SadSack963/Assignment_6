@@ -8,11 +8,11 @@ from time import sleep
 
 class Paddle:
     def __init__(self):
-        self.repeat = False
-        self.repeat_rate = 20  # milliseconds
-        self.screen = turtle.getscreen()
         self.segments = []
         self.create_paddle()
+        self.repeat = False
+        self.repeat_rate = 20  # milliseconds
+        self.screen = turtle.getscreen()  # creates a default turtle if placed before create_paddle
 
     def create_paddle(self):
         for index in range(-2, 2):

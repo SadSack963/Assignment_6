@@ -57,7 +57,7 @@
 &emsp; &emsp; Add a row of bricks below the paddle
 4. Design player paddle - use multiple turtles. 
 5. Detect ball collision with paddle \
-&emsp; Angle of bounce depends upon which turtle is contacted 
+&emsp; Angle of bounce depends upon which segment is contacted 
 6. Detect ball collision with brick \
 &emsp; Angle of bounce depends upon which side of the brick is hit, \
 &emsp; and direction of ball travel 
