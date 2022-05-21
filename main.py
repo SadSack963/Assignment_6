@@ -11,6 +11,7 @@ def new_level(current_level):
     next_level = current_level + 1
     layout = level_layout.levels[next_level]["layout"]
     brick_layout = create_bricks(layout)
+    screen.bgpic("images/background/gradient_2.gif")
     return next_level, brick_layout
 
 
@@ -78,7 +79,7 @@ screen = Screen()
 screen.colormode(255)
 screen.setup(width=c.WIDTH, height=c.HEIGHT)
 screen.bgcolor("grey")
-# screen.tracer(0)
+screen.tracer(0)
 
 paddle = Paddle()
 ball = Ball()
@@ -98,7 +99,6 @@ screen.listen()
 
 level = 0
 level, brick_array = new_level(level)
-screen.bgpic("gradient_2.gif")
 
 count_1 = 0
 count_2 = 0
