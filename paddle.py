@@ -14,12 +14,16 @@ class Paddle:
         self.create_paddle()
 
     def create_paddle(self):
+        """
+        Create a paddle consisting of several turtles. This helps with accurate collision detection.
+        The segment ID is used to alter the ball angle when a collision occurs.
+        """
         for index in range(-2, 2):
             segment = Turtle()
-            segment.color("green")
+            segment.color("black")
             segment.shape("square")
             segment.penup()
-            segment.goto(index * 20, 10 - c.HEIGHT / 2)
+            segment.goto(index * 20, 50 - c.HEIGHT / 2)
             segment.setheading(0)
             segment.velocity = 10
             segment.id = index
@@ -27,12 +31,10 @@ class Paddle:
 
     def start_repeat(self, func):
         """
+        Turns Key Repeat ON.
+        Calls the function passed to it -  move_left() or move_right().
 
-        The lambda function is passed from onkeypress() in main.py
-        :param func:
-        :type func:
-        :return:
-        :rtype:
+        :param func: The lambda function is passed from onkeypress() in main.py
         """
         # Smooth fast key repeat
         # https://stackoverflow.com/questions/44863600/turtle-graphics-keypress-event-not-repeating
@@ -41,21 +43,38 @@ class Paddle:
             func()
 
     def stop_repeat(self):
+        """
+        Turn Key Repeat OFF
+        """
         self.repeat = False
 
     def move_left(self):
+        """
+        Move the paddle left (heading 180), until it hits the edge of the screen.
+        If Key Repeat is ON, set an event timer to run this function again.
+        """
         if self.segments[0].xcor() > 7 - c.EDGE_LR:
             self.move(180)
         if self.repeat:
             Screen().ontimer(self.move_left, self.repeat_rate)
 
     def move_right(self):
+        """
+        Move the paddle right (heading 0), until it hits the edge of the screen.
+        If Key Repeat is ON, set an event timer to run this function again.
+        """
         if self.segments[-1].xcor() < c.EDGE_LR - 8:
             self.move(0)
         if self.repeat:
             Screen().ontimer(self.move_right, self.repeat_rate)
 
     def move(self, heading):
+        """
+        Move the paddle the desired distance at the requested heading.
+
+        :param heading: turtle heading
+        :type heading: float
+        """
         for segment in self.segments:
             segment.setheading(heading)
             segment.forward(segment.velocity)

@@ -23,7 +23,9 @@ class Ball(Turtle):
     def move(self):
         self.forward(self.velocity)
         # Bounce at screen edges
-        if self.xcor() >= c.EDGE_LR or self.xcor() <= -c.EDGE_LR:
+        if self.xcor() >= c.EDGE_LR and (self.heading() < 90 or self.heading() > 270):  # Travelling right
+            self.bounce_x()
+        elif self.xcor() <= -c.EDGE_LR and 90 < self.heading() < 270:  # Travelling left
             self.bounce_x()
         if (self.ycor() >= c.EDGE_TB and 0 < self.heading() < 180) or self.ycor() <= -c.EDGE_TB:
             self.bounce_y()
