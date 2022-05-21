@@ -10,11 +10,21 @@ from time import sleep
 
 
 def new_level():
+    """
+    Get the new brick layout and display on the screen.
+    Reset flash counters.
+    Display the background.
+    Reset the ball and paddle.
+
+    :return: brick_layout: New brick array
+    """
     global count_1, count_2
     count_1, count_2 = 0, 0
     layout = level_layout.levels[level]["layout"]
     brick_layout = create_bricks(layout)
     screen.bgpic(f"images/background/{level_layout.levels[level]['background']}.gif")
+    ball.reset_state()
+    paddle.reset_state()
     screen.update()
     return brick_layout
 
@@ -28,6 +38,13 @@ def game_winner():
 
 
 def color_cycling(count_1, count_2):
+    """
+    Flash brick colours every few seconds
+
+    :param count_1: Long delay between flashing
+    :param count_2: Short delay to cycle the colours
+    :return: count_1, count_2
+    """
     if count_1 % 300 == 0:
         if count_2 % 3 == 0:
             special_bricks(brick_array)
@@ -92,6 +109,9 @@ def ball_brick_collision():
 
 
 def display_instructions():
+    """
+    Display instruction message on screen
+    """
     notify_normal.message_time(
         message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n\n"
                 "Use the D key or the Right cursor key\nto move the paddle to the right.\n\n"
@@ -102,6 +122,11 @@ def display_instructions():
 
 
 def start_game():
+    """
+    Start the game.
+    Turn off instructions. Set to Level 1 and clear the screen.
+    Display the new brick layout.
+    """
     global instructions, level, brick_array, count_1, count_2
     if instructions:
         instructions = False
@@ -111,6 +136,11 @@ def start_game():
 
 
 def clear_screen():
+    """
+    Remove all bricks.
+    Reset the ball and paddle positions.
+    Clear any existing messages.
+    """
     for brick in brick_array.values():
         brick.hideturtle()
     ball.reset_state()
@@ -119,6 +149,12 @@ def clear_screen():
 
 
 def pause_game():
+    """
+    Toggle the pause state.
+    If in pause, display message and call the infinite loop.
+    If coming out of pause, remove the message.
+    If instructions is True then display the instructions.
+    """
     global pause
     if not pause:
         pause = True
@@ -132,10 +168,19 @@ def pause_game():
 
 
 def loop():
+    """
+    Do nothing while in pause.
+    """
     while pause:
         sleep(0.1)
         screen.update()
 
+
+"""
+    ##############################
+    #     Start of game code     # 
+    ##############################
+"""
 
 screen = Screen()
 screen.colormode(255)
@@ -143,6 +188,14 @@ screen.setup(width=c.WIDTH, height=c.HEIGHT)
 screen.bgcolor("black")
 screen.tracer(0)
 
+# Variables
+level = 0
+count_1, count_2 = 0, 0
+game_speed = 300000
+pause = False
+instructions = True
+
+# Define objects
 notify_normal = Messenger(
     fontcolor="white",
     fontsize=16,
@@ -150,6 +203,9 @@ notify_normal = Messenger(
 )
 paddle = Paddle()
 ball = Ball()
+brick_array = new_level()
+
+display_instructions()
 
 # Fast Key Repeat bindings
 screen.onkeypress(lambda: paddle.start_repeat(paddle.move_left) if not pause else None, "a")
@@ -167,16 +223,11 @@ screen.onkeyrelease(pause_game, "p")
 
 screen.listen()
 
-level = 0
-brick_array = new_level()
-count_1, count_2 = 0, 0
-
-game_speed = 300000
-
-pause = False
-instructions = True
-display_instructions()
-
+"""
+    ##############################
+    #         Game Loop          # 
+    ##############################
+"""
 go = True
 while go:
     ball.move()
@@ -202,7 +253,6 @@ while go:
             if not instructions:
                 level += 1
             brick_array = new_level()
-            ball.reset_state()
 
     screen.update()
 
