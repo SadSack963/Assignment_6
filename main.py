@@ -77,6 +77,13 @@ def ball_brick_collision():
     :return: Array with brick removed, level complete flag
 
     """
+    def brick_hit():
+        brick.hits += 1
+        # TODO: Increase score
+        if brick.hits >= brick.hits_required:
+            brick.destroy()
+            current_bricks.pop(brick.id)  # Remove the brick from the array
+
     # -- This loop runs in about 500us regardless of number of bricks --
     win = True
     current_bricks = brick_array.copy()
@@ -85,24 +92,21 @@ def ball_brick_collision():
             # Beat Level
             win = False
             if ball.distance(brick.left) <= 15:
-                brick.destroy()
-                current_bricks.pop(brick.id)  # Remove the brick from the array
+                brick_hit()
                 if ball.heading() < 90 or ball.heading() > 270:  # Travelling right
                     ball.bounce_x()
                 else:
                     ball.bounce_y()
                 break  # Prevent hits on multiple bricks
             if ball.distance(brick.right) <= 15:
-                brick.destroy()
-                current_bricks.pop(brick.id)  # Remove the brick from the array
+                brick_hit()
                 if 90 < ball.heading() < 270:  # Travelling left
                     ball.bounce_x()
                 else:
                     ball.bounce_y()
                 break  # Prevent hits on multiple bricks
             if ball.distance(brick) <= 25:
-                brick.destroy()
-                current_bricks.pop(brick.id)  # Remove the brick from the array
+                brick_hit()
                 ball.bounce_y()
                 break  # Prevent hits on multiple bricks
     return current_bricks, win
@@ -113,9 +117,10 @@ def display_instructions():
     Display instruction message on screen
     """
     notify_normal.message_time(
-        message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n\n"
-                "Use the D key or the Right cursor key\nto move the paddle to the right.\n\n"
+        message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n"
+                "Use the D key or the Right cursor key\nto move the paddle to the right.\n"
                 "You will lose a life\nif the ball goes past the paddle.\n\n"
+                "Press P to pause the game.\n\n"
                 "PRESS SPACE TO START",
         time=0,
     )
@@ -243,7 +248,7 @@ while go:
 
     # Beat Level - start new level
     if win:
-        if level == len(level_layout.levels):
+        if level == len(level_layout.levels) - 1:
             ball.hideturtle()
             game_winner()
             go = False

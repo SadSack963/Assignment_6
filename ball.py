@@ -1,24 +1,29 @@
 import constants as c
 
 from turtle import Turtle
+from random import choice
 from time import sleep
+
+VELOCITY = 5
 
 
 class Ball(Turtle):
+    initial_angles = [angle for angle in range(30, 151, 5) if angle < 80 or angle > 100]
+
     def __init__(self):
         super(Ball, self).__init__()
         self.color("grey90", "grey20")
         self.shape("circle")
         self.penup()
-        self.goto(0, 0)
-        self.setheading(-45)
-        self.velocity = 5
+        self.goto(0, 70 - c.HEIGHT / 2)
+        self.setheading(choice(self.initial_angles))
+        self.velocity = VELOCITY
 
     def reset_state(self):
         self.showturtle()
-        self.goto(0, 0)
-        self.setheading(-45)
-        self.velocity = 5
+        self.goto(0, 50 - c.HEIGHT / 2)
+        self.setheading(choice(self.initial_angles))
+        self.velocity = VELOCITY
 
     def move(self):
         self.forward(self.velocity)
@@ -32,10 +37,12 @@ class Ball(Turtle):
 
     def bounce_x(self):
         self.setheading(180 - self.heading())
+        self.move()
 
     def bounce_y(self, modifier=0):
         new_angle = - (modifier * 5 + self.heading())
         self.setheading(new_angle)
+        self.move()
 
 
 if __name__ == "__main__":

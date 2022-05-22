@@ -14,7 +14,9 @@ class Brick(Turtle):
         self.shapesize(stretch_len=c.STRETCH)
         self.penup()
         self.goto(location)
-        self.style = 2
+        self.style = 1
+        self.hits_required = 1
+        self.hits = 0
         self.id = (row, col)
 
         # Create left and Right edges of brick for collision detection and x bounce
@@ -65,7 +67,7 @@ def create_bricks(layout):
     return bricks
 
 
-def special_bricks(bricks):
+def special_bricks(bricks: [Brick]):
     # ToDo: Types yet to be defined
     for brick in bricks.values():
         if brick.isvisible():
@@ -74,6 +76,7 @@ def special_bricks(bricks):
                     brick.cycle_color(c.COLORS_CYCLE)
                 case 3:
                     brick.fillcolor("red")
+                    brick.hits_required = 2
 
 
 if __name__ == "__main__":

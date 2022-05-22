@@ -5,6 +5,8 @@ import constants as c
 from turtle import Turtle, Screen
 from time import sleep
 
+VELOCITY = 7
+
 
 class Paddle:
     def __init__(self):
@@ -25,7 +27,7 @@ class Paddle:
             segment.penup()
             segment.goto(index * 20, 50 - c.HEIGHT / 2)
             segment.setheading(0)
-            segment.velocity = 10
+            segment.velocity = VELOCITY
             segment.id = index
             self.segments.append(segment)
 
@@ -83,7 +85,7 @@ class Paddle:
         for segment in self.segments:
             segment.goto(segment.id * 20, 50 - c.HEIGHT / 2)
             segment.setheading(0)
-            segment.velocity = 10
+            segment.velocity = VELOCITY
 
 
 if __name__ == "__main__":

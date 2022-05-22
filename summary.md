@@ -20,8 +20,8 @@ Next, I got the collision detection and bouncing angles right for the ball hitti
 
 At this stage the game was becoming playable. But the Turtle onkeypress() is sadly lacking (well, it's the operating system really). There is a huge delay when holding down a key before it starts to repeat, and the animation is far too slow because of the repeat rate. This makes the paddle almost unusable. After a bit of a search on the net, I came across a nice solution which I was able to modify to get the fast key repeat working in my Paddle class. The paddle now moves smoothly across the screen with no delay. It's starting to look and feel like a real game! 😁
 
-Brick collision detection isn't great. I decided to create a 3 segment brick so that the ball doesn't pass through any part of the brick. Although the previous implementation looked passable in practice, having a left and right section also allows me to bounce in both the x and y directions.
+Brick collision detection wasn't great. I decided to create a 3 segment brick so that the ball doesn't pass through any part of the brick. Although the previous implementation looked passable in practice, having a left and right section also allows me to bounce in both the x and y directions making it look more realistic.
 
-Now I need to get the scoring and messages working. An initial instructions page would be good.
+Now I needed to get the scoring and messages working. An initial instructions page was easy, and I implemented a Pause feature that works really well.
 
 The final(?) major task is to get the special bricks to drop bonuses and bombs when destroyed! What fun!
