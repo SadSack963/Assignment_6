@@ -2,6 +2,7 @@ from bricks import create_bricks, special_bricks
 from ball import Ball
 from paddle import Paddle
 from messenger import Messenger
+from scoring import ScoreBoard
 import constants as c
 import level_layout
 
@@ -25,6 +26,8 @@ def new_level():
     screen.bgpic(f"images/background/{level_layout.levels[level]['background']}.gif")
     ball.reset_state()
     paddle.reset_state()
+    scoreboard.display_score()
+    scoreboard.display_lives()
     screen.update()
     return brick_layout
 
@@ -77,52 +80,92 @@ def ball_brick_collision():
     :return: Array with brick removed, level complete flag
 
     """
-    def brick_hit():
+    def brick_hit(brick):
+        """
+        The ball has hit this brick.
+        Increment the score.
+        Remove it from the array if the brick has been hit sufficient times.
+
+        :param brick: brick which has been hit.
+        """
         brick.hits += 1
-        # TODO: Increase score
+        scoreboard.increase_score(amount=1, instructions=instructions)
         if brick.hits >= brick.hits_required:
             brick.destroy()
             current_bricks.pop(brick.id)  # Remove the brick from the array
 
-    # -- This loop runs in about 500us regardless of number of bricks --
-    win = True
-    current_bricks = brick_array.copy()
+    def check_neighbour(id):
+        """
+        Check brick with the given ID to see if it is visible.
+        If so, then this is a simultaneous hit - remove the brick from the array.
+
+        :param id: location of brick in array
+        :return: boolean - brick visible
+        """
+        try:
+            neighbouring_brick = brick_array[id]
+            if neighbouring_brick.isvisible():
+                brick_hit(neighbouring_brick)
+                return True
+            else:
+                return False
+        except KeyError:
+            return False
+
+    # Check each brick in the array to see if the ball has hit it.
+    level_win = True
+    current_bricks = brick_array.copy()  # Copy the array so that we can alter it without breaking the for loop
     for brick in brick_array.values():
         if brick.isvisible():
-            # Beat Level
-            win = False
+            level_win = False  # Bricks are still visible -> Level is still active
+
+            # Hit brick on left side
             if ball.distance(brick.left) <= 15:
-                brick_hit()
-                if ball.heading() < 90 or ball.heading() > 270:  # Travelling right
-                    ball.bounce_x()
+                brick_hit(brick)
+                # Decide which way to bounce
+                if ball.heading() < 90 or ball.heading() > 270:  # Travelling
+                    # Check for simultaneous hit with neighbouring brick
+                    if check_neighbour((brick.id[0], brick.id[1] - 1)):
+                        ball.bounce_y()
+                    else:
+                        ball.bounce_x()
                 else:
                     ball.bounce_y()
                 break  # Prevent hits on multiple bricks
+
+            # Hit brick on right side
             if ball.distance(brick.right) <= 15:
-                brick_hit()
+                brick_hit(brick)
+                # Decide which way to bounce
                 if 90 < ball.heading() < 270:  # Travelling left
-                    ball.bounce_x()
+                    # Check for simultaneous hit with neighbouring brick
+                    if check_neighbour((brick.id[0], brick.id[1] + 1)):
+                        ball.bounce_y()
+                    else:
+                        ball.bounce_x()
                 else:
                     ball.bounce_y()
                 break  # Prevent hits on multiple bricks
+
+            # Hit brick in middle
             if ball.distance(brick) <= 25:
-                brick_hit()
+                brick_hit(brick)
                 ball.bounce_y()
                 break  # Prevent hits on multiple bricks
-    return current_bricks, win
+    return current_bricks, level_win
 
 
 def display_instructions():
     """
     Display instruction message on screen
     """
-    notify_normal.message_time(
+    notify_normal.message(
         message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n"
                 "Use the D key or the Right cursor key\nto move the paddle to the right.\n"
                 "You will lose a life\nif the ball goes past the paddle.\n\n"
                 "Press P to pause the game.\n\n"
                 "PRESS SPACE TO START",
-        time=0,
+        position=(0, -120),
     )
 
 
@@ -138,6 +181,7 @@ def start_game():
         level = 1
         clear_screen()
         brick_array = new_level()
+        scoreboard.reset()
 
 
 def clear_screen():
@@ -163,11 +207,10 @@ def pause_game():
     global pause
     if not pause:
         pause = True
-        notify_normal.message_time(message="PAUSED")
+        notify_normal.message(message="PAUSED")
         loop()
     else:
         pause = False
-        notify_normal.message_clear()
         if instructions:
             display_instructions()
 
@@ -208,8 +251,9 @@ notify_normal = Messenger(
 )
 paddle = Paddle()
 ball = Ball()
-brick_array = new_level()
+scoreboard = ScoreBoard()
 
+brick_array = new_level()
 display_instructions()
 
 # Fast Key Repeat bindings

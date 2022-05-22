@@ -10,29 +10,20 @@ class Messenger(Turtle):
         super(Messenger, self).__init__()
         self.pu()
         self.hideturtle()
-        self.setposition(0, -120)
         self.pencolor(fontcolor)
         self.font = ("Comic Sans", fontsize, fonttype)
 
-    def message_time(self, message, time=0):
+    def message(self, message, position: tuple = None):
         """
         Displays message for the given time.
-        Previous message are cleared, which allows messages to be written to the same location on screen.
-        If time <= 0 then the message is not cleared until the next message is written.
         """
-        self.message_clear()  # Clear any previous message
-        self.write(arg=message, move=False, align="center", font=self.font)
-        if time > 0:
-            sleep(time)
-            self.clear()
-
-    def message_position(self, message, position: tuple):
-        """
-        Displays message at the given position.
-        Previous messages are NOT cleared.
-        """
-        self.setposition(position)
+        self.clear()
+        if position:
+            self.setposition(position)
         self.write(arg=message, move=False, align="center", font=self.font)
 
     def message_clear(self):
-        self.clear()  # Clear any previous message
+        """
+        Clear all previous messages
+        """
+        self.clear()
