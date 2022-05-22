@@ -67,5 +67,7 @@
 9. Maybe a fancy screen when you win
 
 ## Bugs
-If the ball hits at the bottom corner, then sometimes it reappears in the bottom right corner!
-Sometimes the ball gets stuck between the bricks and the wall (particularly on the right wall), and it destroys a whole column of bricks. I have also seen this happen along the top of the screen, but not recently.
+<ol>
+<li>If the ball hits at the bottom corner, then sometimes it reappears in the bottom right corner! 
+<p>I have also seen it disappear from the bottom right corner and reappear in the bottom left corner!
+<li>Sometimes the ball gets stuck between the bricks and the wall (particularly on the right wall), and it destroys a whole column of bricks. I have also seen this happen along the top of the screen, but not recently. 

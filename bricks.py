@@ -8,7 +8,7 @@ class Brick(Turtle):
     def __init__(self, style: int, row: int, col: int):
         # Main brick
         super(Brick, self).__init__()
-        location = (25 - c.EDGE_LR + col * 20 * c.STRETCH, c.EDGE_TB - row * 20)
+        self.location = (25 - c.EDGE_LR + col * 20 * c.STRETCH, c.EDGE_TB - row * 20)
         self.style = style
         self.id = (row, col)
         self.type = brick_types[self.style]["title"]
@@ -20,7 +20,8 @@ class Brick(Turtle):
         self.shape("square")
         self.shapesize(stretch_len=c.STRETCH)
         self.penup()
-        self.goto(location)
+        self.goto(self.location)
+        self.drop = brick_types[self.style]["drop"]
         self.start_cycle = False
         self.count = 0
         self.repeat_rate = 50  # milliseconds
@@ -32,7 +33,7 @@ class Brick(Turtle):
         self.left.shape("square")
         self.left.shapesize(stretch_len=c.STRETCH / 12)  # 5 pixels wide
         self.left.penup()
-        self.left.goto(location[0] - 28 + c.STRETCH / 12, location[1])
+        self.left.goto(self.location[0] - 28 + c.STRETCH / 12, self.location[1])
         self.left.hideturtle()
 
         # Right (invisible)
@@ -41,7 +42,7 @@ class Brick(Turtle):
         self.right.shape("square")
         self.right.shapesize(stretch_len=c.STRETCH / 12)  # 5 pixels wide
         self.right.penup()
-        self.right.goto(location[0] + 28 - c.STRETCH / 12, location[1])
+        self.right.goto(self.location[0] + 28 - c.STRETCH / 12, self.location[1])
         self.right.hideturtle()
 
         if self.style == 2 or self.style == 5:

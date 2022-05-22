@@ -5,6 +5,7 @@ brick_types = {
     1: {
         "title": "ordinary",
         "hits": 1,
+        "drop": "",
         "color": [
             "grey",
         ],
@@ -12,6 +13,7 @@ brick_types = {
     2: {
         "title": "flashing",
         "hits": 1,
+        "drop": "+10 points",
         "color": [
             "grey0",
             "grey10",
@@ -39,6 +41,7 @@ brick_types = {
     3: {
         "title": "multi-hit",
         "hits": 5,
+        "drop": "",
         "color": [
             "firebrick1",
             "firebrick2",
@@ -50,6 +53,7 @@ brick_types = {
     4: {
         "title": "indestructible",
         "hits": -1,
+        "drop": "",
         "color": [
             "gray50"
             "gray70",
@@ -187,9 +191,9 @@ brick_types = {
 levels = {
     0: {"background": "gradient_1",
         "layout": [
-            [1, 1, 2, 2, 5, 5, 2, 2, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],

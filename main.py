@@ -3,6 +3,7 @@ from ball import Ball
 from paddle import Paddle
 from messenger import Messenger
 from scoring import ScoreBoard
+from drop_objects import DropObject
 import constants as c
 import level_layout
 
@@ -42,6 +43,15 @@ def game_winner():
     win_message.message("You have beaten the game!\nWell done!")
 
 
+def get_drop_object():
+    for index in range(len(drop_list)):
+        if not drop_list[index].in_use:
+            drop_list[index].in_use = True
+            return index
+    print("Error - all drop objects in use")
+    return None
+
+
 def ball_paddle_collision():
     """
     Check for a collision between the ball and the paddle.
@@ -74,6 +84,7 @@ def ball_brick_collision():
         brick.hits += 1
         scoreboard.increase_score(amount=1, instructions=instructions)
         if brick.hits >= brick.hits_required:
+            drop(brick)
             brick.destroy()
             current_bricks.pop(brick.id)  # Remove the brick from the array
 
@@ -94,6 +105,17 @@ def ball_brick_collision():
                 return False
         except KeyError:
             return False
+
+    def drop(brick):
+        match brick.drop:
+            case "+10 points":
+                index = get_drop_object()
+                if index is not None:
+                    drop_list[index].type = brick.drop
+                    drop_list[index].shape("turtle")
+                    drop_list[index].setheading(-90)
+                    drop_list[index].goto(brick.location)
+                    drop_list[index].showturtle()
 
     # Check each brick in the array to see if the ball has hit it.
     level_win = True
@@ -240,6 +262,7 @@ win_message = Messenger(
     fontsize=20,
     fonttype="italic"
 )
+drop_list = [DropObject() for _ in range(5)]
 
 brick_array = new_level()
 display_instructions()
@@ -274,6 +297,10 @@ while go:
 
     # Detect collision with bricks
     brick_array, win = ball_brick_collision()
+
+    for item in drop_list:
+        if item.in_use:
+            item.move()
 
     # Beat Level - start new level
     if win:
