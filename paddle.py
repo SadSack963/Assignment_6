@@ -5,7 +5,7 @@ import constants as c
 from turtle import Turtle, Screen
 from time import sleep
 
-VELOCITY = 7
+VELOCITY = 10
 
 
 class Paddle:

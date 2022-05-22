@@ -53,8 +53,8 @@
 &emsp; &emsp; Add gun to paddle for a time \
 &emsp; &emsp; Ball can punch through bricks for a time \
 &emsp; &emsp; Make paddle larger for a time \
-&emsp; &emsp; Slow ball for a time
-&emsp; &emsp; Sticky paddle
+&emsp; &emsp; Slow ball for a time \
+&emsp; &emsp; Sticky paddle \
 &emsp; &emsp; Add a row of bricks below the paddle
 4. Design player paddle - use multiple turtles. 
 5. Detect ball collision with paddle \
@@ -65,3 +65,7 @@
 7. Create Algorithm to auto-generate brick patterns
 8. Scoring and messages
 9. Maybe a fancy screen when you win
+
+## Bugs
+If the ball hits at the bottom corner, then sometimes it reappears in the bottom right corner!
+Sometimes the ball gets stuck between the bricks and the wall (particularly on the right wall), and it destroys a whole column of bricks. I have also seen this happen along the top of the screen, but not recently.

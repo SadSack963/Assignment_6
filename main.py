@@ -1,4 +1,4 @@
-from bricks import create_bricks, special_bricks
+from bricks import create_bricks
 from ball import Ball
 from paddle import Paddle
 from messenger import Messenger
@@ -33,30 +33,13 @@ def new_level():
 
 
 def level_winner(current_level):
-    print(f"You beat Level {current_level}")
+    win_message.message(f"You beat\nLevel {current_level}")
+    sleep(3)
+    win_message.clear()
 
 
 def game_winner():
-    print("You have beaten the game!")
-
-
-def color_cycling(count_1, count_2):
-    """
-    Flash brick colours every few seconds
-
-    :param count_1: Long delay between flashing
-    :param count_2: Short delay to cycle the colours
-    :return: count_1, count_2
-    """
-    if count_1 % 300 == 0:
-        if count_2 % 3 == 0:
-            special_bricks(brick_array)
-        count_2 += 1
-    if count_2 > 62:
-        count_2 = 0
-    if count_2 == 0:
-        count_1 += 1
-    return count_1, count_2
+    win_message.message("You have beaten the game!\nWell done!")
 
 
 def ball_paddle_collision():
@@ -252,6 +235,11 @@ notify_normal = Messenger(
 paddle = Paddle()
 ball = Ball()
 scoreboard = ScoreBoard()
+win_message = Messenger(
+    fontcolor="red",
+    fontsize=20,
+    fonttype="italic"
+)
 
 brick_array = new_level()
 display_instructions()
@@ -280,9 +268,6 @@ screen.listen()
 go = True
 while go:
     ball.move()
-
-    # Bricks Colour Cycling
-    count_1, count_2 = color_cycling(count_1, count_2)
 
     # Detect ball collision with paddle
     ball_paddle_collision()

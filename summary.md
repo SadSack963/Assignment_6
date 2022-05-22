@@ -24,4 +24,6 @@ Brick collision detection wasn't great. I decided to create a 3 segment brick so
 
 Now I needed to get the scoring and messages working. An initial instructions page was easy, and I implemented a Pause feature that works really well.
 
+I was still unhappy with the way the ball bounced when two bricks side by side were hit simultaneously. Sorting this out was tricky and took me some hours of careful observation and debugging, but eventually I got there. Both bricks are removed and the score incremented. The ball will bounce in the Y direction instead of causing two separate X bounces.
+
 The final(?) major task is to get the special bricks to drop bonuses and bombs when destroyed! What fun!

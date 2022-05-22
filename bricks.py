@@ -1,26 +1,32 @@
 import constants as c
+from level_layout import brick_types
 
-from turtle import Turtle
+from turtle import Turtle, Screen
 
 
 class Brick(Turtle):
-    def __init__(self, color_index, location, row, col):
+    def __init__(self, style: int, row: int, col: int):
         # Main brick
         super(Brick, self).__init__()
-        self.color_index = color_index
-        self.fillcolor(c.COLORS[self.color_index])
+        location = (25 - c.EDGE_LR + col * 20 * c.STRETCH, c.EDGE_TB - row * 20)
+        self.style = style
+        self.id = (row, col)
+        self.type = brick_types[self.style]["title"]
+        self.hits_required = brick_types[self.style]["hits"]
+        self.hits = 0
+        self.color_index = 0
+        self.fillcolor(brick_types[self.style]["color"][self.color_index])
         self.pencolor("white")
         self.shape("square")
         self.shapesize(stretch_len=c.STRETCH)
         self.penup()
         self.goto(location)
-        self.style = 1
-        self.hits_required = 1
-        self.hits = 0
-        self.id = (row, col)
+        self.start_cycle = False
+        self.count = 0
+        self.repeat_rate = 50  # milliseconds
 
         # Create left and Right edges of brick for collision detection and x bounce
-        # Left section
+        # Left (invisible)
         self.left = Turtle()
         self.left.color("yellow")
         self.left.shape("square")
@@ -29,7 +35,7 @@ class Brick(Turtle):
         self.left.goto(location[0] - 28 + c.STRETCH / 12, location[1])
         self.left.hideturtle()
 
-        # Right section
+        # Right (invisible)
         self.right = Turtle()
         self.right.color("blue")
         self.right.shape("square")
@@ -38,50 +44,46 @@ class Brick(Turtle):
         self.right.goto(location[0] + 28 - c.STRETCH / 12, location[1])
         self.right.hideturtle()
 
-    def cycle_color(self, colors: list):
-        self.color_index += 1
-        if self.color_index == len(colors):
-            self.color_index = 0
-        self.fillcolor(c.COLORS_CYCLE[self.color_index])
+        if self.style == 2 or self.style == 5:
+            self.start_cycle = True
+            self.cycle_color()
+
+    def cycle_color(self):
+        if self.start_cycle:
+            self.color_index += 1
+            if self.color_index == len(brick_types[self.style]["color"]):
+                self.color_index = 0
+                self.start_cycle = False
+            self.fillcolor(brick_types[self.style]["color"][self.color_index])
+        Screen().ontimer(self.cycle_color, self.repeat_rate)
+        self.count += 1
+        if self.count == 150:
+            self.start_cycle = True
+            self.count = 0
 
     def destroy(self):
         self.hideturtle()
 
 
-def create_bricks(layout):
-    rows = len(layout)
+def create_bricks(layout_array: list):
+    rows = len(layout_array)
 
     # Store the bricks in a dictionary, using (row, col) as the key
     bricks = {}
     for row in range(rows):
         for column in range(c.COLUMNS):
-            if layout[row][column] > 0:
+            if layout_array[row][column] > 0:
                 brick = Brick(
-                    color_index=0,
-                    location=(25 - c.EDGE_LR + column * 20 * c.STRETCH, c.EDGE_TB - row * 20),
+                    style=layout_array[row][column],
                     row=row,
                     col=column,
                 )
-                brick.style = layout[row][column]
                 bricks[brick.id] = brick
     return bricks
 
 
-def special_bricks(bricks: [Brick]):
-    # ToDo: Types yet to be defined
-    for brick in bricks.values():
-        if brick.isvisible():
-            match brick.style:
-                case 2:
-                    brick.cycle_color(c.COLORS_CYCLE)
-                case 3:
-                    brick.fillcolor("red")
-                    brick.hits_required = 2
-
-
 if __name__ == "__main__":
     from turtle import Screen
-    from time import sleep
     import level_layout
 
     screen = Screen()
