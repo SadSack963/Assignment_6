@@ -6,6 +6,7 @@ brick_types = {
         "title": "ordinary",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
             "grey",
         ],
@@ -14,6 +15,7 @@ brick_types = {
         "title": "flashing",
         "hits": 1,
         "drop": "+10 points",
+        "sprite": "star",
         "color": [
             "grey0",
             "grey10",
@@ -42,6 +44,7 @@ brick_types = {
         "title": "multi-hit",
         "hits": 5,
         "drop": "",
+        "sprite": "",
         "color": [
             "firebrick1",
             "firebrick2",
@@ -54,15 +57,17 @@ brick_types = {
         "title": "indestructible",
         "hits": -1,
         "drop": "",
+        "sprite": "",
         "color": [
             "gray50"
             "gray70",
         ],
     },
     5: {
-        "title": "more_points",
+        "title": "brick_row",
         "hits": 1,
-        "drop": "+10 points",
+        "drop": "bricks",
+        "sprite": "",
         "color": [
             "chartreuse2",
             "chartreuse3",
@@ -85,6 +90,7 @@ brick_types = {
         "title": "less_points",
         "hits": 1,
         "drop": "-10 points",
+        "sprite": "",
         "color": [
         ],
     },
@@ -92,13 +98,16 @@ brick_types = {
         "title": "more_lives",
         "hits": 1,
         "drop": "+1 life",
+        "sprite": "heart",
         "color": [
+            "green"
         ],
     },
     8: {
         "title": "less_lives",
-        "drop": "-1 life",
         "hits": 1,
+        "drop": "-1 life",
+        "sprite": "",
         "color": [
         ],
     },
@@ -106,6 +115,7 @@ brick_types = {
         "title": "gun",
         "hits": 1,
         "drop": "gun",
+        "sprite": "",
         "color": [
         ],
     },
@@ -113,6 +123,7 @@ brick_types = {
         "title": "steel ball",
         "hits": 1,
         "drop": "punch through bricks",
+        "sprite": "",
         "color": [
         ],
     },
@@ -120,6 +131,7 @@ brick_types = {
         "title": "boundary",
         "hits": 1,
         "drop": "bricks below paddle",
+        "sprite": "",
         "color": [
         ],
     },
@@ -127,6 +139,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -134,6 +147,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -141,6 +155,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -155,6 +170,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -162,6 +178,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -169,6 +186,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -176,6 +194,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -183,6 +202,7 @@ brick_types = {
         "title": "",
         "hits": 1,
         "drop": "",
+        "sprite": "",
         "color": [
         ],
     },
@@ -192,8 +212,8 @@ levels = {
     0: {"background": "gradient_1",
         "layout": [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-            [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [2, 2, 7, 7, 2, 2, 7, 7, 2, 2],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],

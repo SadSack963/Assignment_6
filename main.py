@@ -3,7 +3,7 @@ from ball import Ball
 from paddle import Paddle
 from messenger import Messenger
 from scoring import ScoreBoard
-from drop_objects import DropObject
+from drop_objects import DropObject, get_icons
 import constants as c
 import level_layout
 
@@ -24,7 +24,7 @@ def new_level():
     count_1, count_2 = 0, 0
     layout = level_layout.levels[level]["layout"]
     brick_layout = create_bricks(layout)
-    screen.bgpic(f"images/background/{level_layout.levels[level]['background']}.gif")
+    screen.bgpic(f"images/backgrounds/{level_layout.levels[level]['background']}.gif")
     ball.reset_state()
     paddle.reset_state()
     scoreboard.display_score()
@@ -111,8 +111,16 @@ def ball_brick_collision():
             case "+10 points":
                 index = get_drop_object()
                 if index is not None:
-                    drop_list[index].type = brick.drop
-                    drop_list[index].shape("turtle")
+                    drop_list[index].style = brick.drop
+                    drop_list[index].shape("images/icons/star.gif")
+                    drop_list[index].setheading(-90)
+                    drop_list[index].goto(brick.location)
+                    drop_list[index].showturtle()
+            case "+1 life":
+                index = get_drop_object()
+                if index is not None:
+                    drop_list[index].style = brick.drop
+                    drop_list[index].shape(f"images/icons/heart.gif")
                     drop_list[index].setheading(-90)
                     drop_list[index].goto(brick.location)
                     drop_list[index].showturtle()
@@ -262,6 +270,7 @@ win_message = Messenger(
     fontsize=20,
     fonttype="italic"
 )
+icon_names = get_icons("images/icons/")
 drop_list = [DropObject() for _ in range(5)]
 
 brick_array = new_level()
