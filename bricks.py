@@ -2,6 +2,7 @@ import constants as c
 from level_layout import brick_types
 
 from turtle import Turtle, Screen
+from random import randint
 
 
 class Brick(Turtle):
@@ -21,9 +22,10 @@ class Brick(Turtle):
         self.shapesize(stretch_len=c.STRETCH)
         self.penup()
         self.goto(self.location)
-        self.drop = brick_types[self.style]["drop"]
+        self.drop_item = brick_types[self.style]["drop"]
         self.start_cycle = False
         self.count = 0
+        self.cycle_delay = randint(200, 400)
         self.repeat_rate = 50  # milliseconds
 
         # Create left and Right edges of brick for collision detection and x bounce
@@ -45,7 +47,7 @@ class Brick(Turtle):
         self.right.goto(self.location[0] + 28 - c.STRETCH / 12, self.location[1])
         self.right.hideturtle()
 
-        if self.style == 2 or self.style == 5:
+        if self.style in [2, 7, 8]:
             self.start_cycle = True
             self.cycle_color()
 
@@ -58,7 +60,7 @@ class Brick(Turtle):
             self.fillcolor(brick_types[self.style]["color"][self.color_index])
         Screen().ontimer(self.cycle_color, self.repeat_rate)
         self.count += 1
-        if self.count == 150:
+        if self.count == self.cycle_delay:
             self.start_cycle = True
             self.count = 0
 
@@ -80,6 +82,18 @@ def create_bricks(layout_array: list):
                     col=column,
                 )
                 bricks[brick.id] = brick
+    return bricks
+
+
+def create_bricks_below_paddle():
+    bricks = {}
+    for column in range(c.COLUMNS):
+        brick = Brick(
+            style=1,
+            row=18,
+            col=column,
+        )
+        bricks[brick.id] = brick
     return bricks
 
 

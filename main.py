@@ -1,4 +1,4 @@
-from bricks import create_bricks
+from bricks import create_bricks, create_bricks_below_paddle
 from ball import Ball
 from paddle import Paddle
 from messenger import Messenger
@@ -29,6 +29,8 @@ def new_level():
     paddle.reset_state()
     scoreboard.display_score()
     scoreboard.display_lives()
+    if not instructions:
+        pause_game()
     screen.update()
     return brick_layout
 
@@ -43,15 +45,6 @@ def game_winner():
     win_message.message("You have beaten the game!\nWell done!")
 
 
-def get_drop_object():
-    for index in range(len(drop_list)):
-        if not drop_list[index].in_use:
-            drop_list[index].in_use = True
-            return index
-    print("Error - all drop objects in use")
-    return None
-
-
 def ball_paddle_collision():
     """
     Check for a collision between the ball and the paddle.
@@ -60,6 +53,7 @@ def ball_paddle_collision():
     if ball.ycor() < (80 - c.HEIGHT / 2) and (ball.heading() < 0 or ball.heading() > 180):
         for segment in paddle.segments:
             if ball.distance(segment) <= 20:
+                print(ball.heading())
                 ball.bounce_y(segment.id)
                 break
 
@@ -84,7 +78,7 @@ def ball_brick_collision():
         brick.hits += 1
         scoreboard.increase_score(amount=1, instructions=instructions)
         if brick.hits >= brick.hits_required:
-            drop(brick)
+            brick_drop_item(brick)
             brick.destroy()
             current_bricks.pop(brick.id)  # Remove the brick from the array
 
@@ -105,25 +99,6 @@ def ball_brick_collision():
                 return False
         except KeyError:
             return False
-
-    def drop(brick):
-        match brick.drop:
-            case "+10 points":
-                index = get_drop_object()
-                if index is not None:
-                    drop_list[index].style = brick.drop
-                    drop_list[index].shape("images/icons/star.gif")
-                    drop_list[index].setheading(-90)
-                    drop_list[index].goto(brick.location)
-                    drop_list[index].showturtle()
-            case "+1 life":
-                index = get_drop_object()
-                if index is not None:
-                    drop_list[index].style = brick.drop
-                    drop_list[index].shape(f"images/icons/heart.gif")
-                    drop_list[index].setheading(-90)
-                    drop_list[index].goto(brick.location)
-                    drop_list[index].showturtle()
 
     # Check each brick in the array to see if the ball has hit it.
     level_win = True
@@ -168,6 +143,85 @@ def ball_brick_collision():
     return current_bricks, level_win
 
 
+def get_drop_object():
+    """
+    Check the list of drop items to see if one is not in use.
+    If found, return the list index for that item.
+
+    :return: index: List index of the allocated drop item
+    :rtype: int
+    """
+    for index in range(len(drop_list)):
+        if not drop_list[index].in_use:
+            drop_list[index].in_use = True
+            return index
+    print("Error - all drop objects in use")
+    return None
+
+
+def brick_drop_item(brick):
+    """
+    Drop an item when the brick is destroyed.
+
+    :param brick: The brick being destroyed
+    :type brick:
+    """
+    if brick.style in [2, 5, 7, 8]:
+        index = get_drop_object()
+        if index is not None:
+            drop_list[index].style = brick.drop_item
+            file = level_layout.brick_types[brick.style]["sprite"]
+            drop_list[index].shape(f"images/icons/{file}.gif")
+            drop_list[index].setheading(-90)
+            drop_list[index].goto(brick.location)
+            drop_list[index].showturtle()
+
+
+def ball_drop_item_collision(item):
+    """
+    If the drop item is hit by the ball, then add a bonus of 50 points to the score.
+    Perform the item's special operation, and make the item in the list available again.
+
+    :param item: item from drop_list
+    :type item:
+    """
+    if ball.distance(item) < 20:
+        scoreboard.increase_score(amount=50, instructions=instructions)
+        special_item(item)
+        item.destroy()
+
+
+def paddle_drop_item_collision(item):
+    """
+    If the drop item is hit by the paddle, then increment the score.
+    Perform the item's special operation, and make the item in the list available again.
+
+    :param item: item from drop_list
+    :type item:
+    """
+    for segment in paddle.segments:
+        if segment.distance(item) < 20:
+            scoreboard.increase_score(amount=1, instructions=instructions)
+            special_item(item)
+            item.destroy()
+
+
+def special_item(item):
+    match item.style:
+        case "+10 points":
+            scoreboard.increase_score(amount=10, instructions=instructions)
+        case "+1 life":
+            scoreboard.increase_lives(1)
+        case "-1 life":
+            scoreboard.increase_lives(-1)
+        case "bricks":
+            for brick in brick_array.values():
+                if brick.id[0] == 18:
+                    brick.hideturtle()
+            new_bricks = create_bricks_below_paddle()
+            brick_array.update(new_bricks)
+
+
 def display_instructions():
     """
     Display instruction message on screen
@@ -176,7 +230,7 @@ def display_instructions():
         message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n"
                 "Use the D key or the Right cursor key\nto move the paddle to the right.\n"
                 "You will lose a life\nif the ball goes past the paddle.\n\n"
-                "Press P to pause the game.\n\n"
+                "Press P, S or Down cursor key to pause the game.\n\n"
                 "PRESS SPACE TO START",
         position=(0, -120),
     )
@@ -194,7 +248,7 @@ def start_game():
         level = 1
         clear_screen()
         brick_array = new_level()
-        scoreboard.reset()
+        scoreboard.reset_state()
 
 
 def clear_screen():
@@ -224,6 +278,13 @@ def pause_game():
         loop()
     else:
         pause = False
+        notify_normal.message(message="3")
+        sleep(0.5)
+        notify_normal.message(message="2")
+        sleep(0.5)
+        notify_normal.message(message="1")
+        sleep(0.5)
+        notify_normal.message_clear()
         if instructions:
             display_instructions()
 
@@ -289,6 +350,8 @@ screen.onkeyrelease(paddle.stop_repeat, "Right")
 
 screen.onkeyrelease(start_game, "space")
 screen.onkeyrelease(pause_game, "p")
+screen.onkeyrelease(pause_game, "s")
+screen.onkeyrelease(pause_game, "Down")
 
 screen.listen()
 
@@ -299,25 +362,39 @@ screen.listen()
 """
 go = True
 while go:
-    ball.move()
+    # Move the ball
+    ball.move(instructions)
+    if not instructions and ball.ycor() <= -c.EDGE_TB:
+        scoreboard.increase_lives(-1)
+        paddle.reset_state()
+        ball.reset_state()
+        pause_game()
+        continue
 
     # Detect ball collision with paddle
     ball_paddle_collision()
 
     # Detect collision with bricks
-    brick_array, win = ball_brick_collision()
+    brick_array, bricks_destroyed = ball_brick_collision()
 
-    for item in drop_list:
-        if item.in_use:
-            item.move()
+    # Move the dropped items and check for collisions
+    drop_items_in_use = False
+    for drop_item in drop_list:
+        if drop_item.in_use:
+            drop_items_in_use = True
+            drop_item.move()
+            ball_drop_item_collision(drop_item)
+            paddle_drop_item_collision(drop_item)
 
-    # Beat Level - start new level
-    if win:
+    # Check to see if the level is complete
+    if bricks_destroyed and not drop_items_in_use:
         if level == len(level_layout.levels) - 1:
+            # Beat All Levels - end the game
             ball.hideturtle()
             game_winner()
             go = False
         else:
+            # Beat Level - start new level
             ball.hideturtle()
             level_winner(level)
             if not instructions:
@@ -326,7 +403,7 @@ while go:
 
     screen.update()
 
-    # Loop to control game speed
+    # Loop to control game speed - much better than time.sleep()!
     for _ in range(game_speed):
         pass
 

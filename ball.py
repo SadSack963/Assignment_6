@@ -25,24 +25,30 @@ class Ball(Turtle):
         self.setheading(choice(self.initial_angles))
         self.velocity = VELOCITY
 
-    def move(self):
+    def move(self, instructions=False):
         self.forward(self.velocity)
         # Bounce at screen edges
         if self.xcor() >= c.EDGE_LR and (self.heading() < 90 or self.heading() > 270):  # Travelling right
             self.bounce_x()
         elif self.xcor() <= -c.EDGE_LR and 90 < self.heading() < 270:  # Travelling left
             self.bounce_x()
-        if (self.ycor() >= c.EDGE_TB and 0 < self.heading() < 180) or self.ycor() <= -c.EDGE_TB:
+        if self.ycor() >= c.EDGE_TB and 0 < self.heading() < 180:  # Travelling up
+            self.bounce_y()
+        elif self.ycor() <= -c.EDGE_TB and 180 < self.heading() <= 359 and instructions:  # Travelling down
             self.bounce_y()
 
-    def bounce_x(self):
+    def bounce_x(self, instructions=False):
         self.setheading(180 - self.heading())
-        self.move()
+        self.move(instructions)
 
-    def bounce_y(self, modifier=0):
+    def bounce_y(self, modifier=0, instructions=False):
+        # Don't allow the ball angle to become too shallow
+        if 180 < self.heading() < 220 and modifier < 0 or \
+                340 < self.heading() < 359 and modifier > 0:
+            modifier = 0
         new_angle = - (modifier * 5 + self.heading())
         self.setheading(new_angle)
-        self.move()
+        self.move(instructions)
 
 
 if __name__ == "__main__":

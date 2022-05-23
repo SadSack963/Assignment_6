@@ -59,7 +59,7 @@ brick_types = {
         "drop": "",
         "sprite": "",
         "color": [
-            "gray50"
+            "gray50",
             "gray70",
         ],
     },
@@ -67,23 +67,9 @@ brick_types = {
         "title": "brick_row",
         "hits": 1,
         "drop": "bricks",
-        "sprite": "",
+        "sprite": "bricks",
         "color": [
-            "chartreuse2",
-            "chartreuse3",
-            "chartreuse4",
-            "chartreuse3",
-            "chartreuse2",
-            "chartreuse2",
-            "chartreuse3",
-            "chartreuse4",
-            "chartreuse3",
-            "chartreuse2",
-            "chartreuse2",
-            "chartreuse3",
-            "chartreuse4",
-            "chartreuse3",
-            "chartreuse2",
+            "grey70",
         ],
     },
     6: {
@@ -96,19 +82,31 @@ brick_types = {
     },
     7: {
         "title": "more_lives",
-        "hits": 1,
+        "hits": 2,
         "drop": "+1 life",
         "sprite": "heart",
         "color": [
-            "green"
+            "chartreuse4",
+            "chartreuse3",
+            "chartreuse3",
+            "chartreuse2",
+            "chartreuse2",
+            "chartreuse3",
+            "chartreuse3",
+            "chartreuse4",
         ],
     },
     8: {
         "title": "less_lives",
-        "hits": 1,
+        "hits": 2,
         "drop": "-1 life",
-        "sprite": "",
+        "sprite": "skull",
         "color": [
+            "red",
+            "yellow",
+            "red",
+            "yellow",
+            "red",
         ],
     },
     9: {
@@ -209,15 +207,16 @@ brick_types = {
 }
 
 levels = {
+    # Maximum 19 rows (0 to 18)
     0: {"background": "gradient_1",
         "layout": [
+            [1, 1, 1, 5, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 2, 2, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 2, 7, 7, 2, 2, 7, 7, 2, 2],
+            [2, 5, 1, 7, 1, 8, 1, 7, 1, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],

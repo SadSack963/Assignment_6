@@ -5,7 +5,7 @@ import constants as c
 from turtle import Turtle, Screen
 from time import sleep
 
-VELOCITY = 10
+VELOCITY = 12
 
 
 class Paddle:
@@ -20,12 +20,12 @@ class Paddle:
         Create a paddle consisting of several turtles. This helps with accurate collision detection.
         The segment ID is used to alter the ball angle when a collision occurs.
         """
-        for index in range(-2, 2):
+        for index in range(-2, 3):
             segment = Turtle()
             segment.color("black")
             segment.shape("square")
             segment.penup()
-            segment.goto(index * 20, 50 - c.HEIGHT / 2)
+            segment.goto(index * 20, 60 - c.HEIGHT // 2)
             segment.setheading(0)
             segment.velocity = VELOCITY
             segment.id = index
@@ -83,7 +83,7 @@ class Paddle:
 
     def reset_state(self):
         for segment in self.segments:
-            segment.goto(segment.id * 20, 50 - c.HEIGHT / 2)
+            segment.goto(segment.id * 20, 50 - c.HEIGHT // 2)
             segment.setheading(0)
             segment.velocity = VELOCITY
 

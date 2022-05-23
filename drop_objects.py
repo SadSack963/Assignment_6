@@ -1,4 +1,6 @@
 import constants as c
+from scoring import ScoreBoard
+from bricks import create_bricks_below_paddle
 
 from turtle import Turtle, Screen
 from os import listdir
@@ -22,6 +24,10 @@ class DropObject(Turtle):
         self.hideturtle()
         self.in_use = False
         self.style = ""
+
+    def destroy(self):
+        self.hideturtle()
+        self.in_use = False
 
 
 def get_icons(folder):

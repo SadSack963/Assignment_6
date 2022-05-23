@@ -49,11 +49,11 @@ class ScoreBoard:
         self.display_lives()
 
     def display_score(self):
-        self.score.message(f"Score\n{self.current_score} / {self.max_score}", position=(-280, -190))
+        self.score.message(f"Score\n{self.current_score} / {self.max_score}", position=(-280, -140))
 
     def display_lives(self):
-        self.lives.message(f"Lives\n{self.current_lives}", position=(280, -190))
+        self.lives.message(f"Lives\n{self.current_lives}", position=(280, -140))
 
-    def reset(self):
+    def reset_state(self):
         self.current_score = 0
         self.current_lives = 5
