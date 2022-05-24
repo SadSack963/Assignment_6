@@ -73,6 +73,7 @@ def create_bricks(layout_array: list):
 
     # Store the bricks in a dictionary, using (row, col) as the key
     bricks = {}
+    total_bricks = 0
     for row in range(rows):
         for column in range(c.COLUMNS):
             if layout_array[row][column] > 0:
@@ -82,11 +83,13 @@ def create_bricks(layout_array: list):
                     col=column,
                 )
                 bricks[brick.id] = brick
-    return bricks
+                total_bricks += 1
+    return bricks, total_bricks
 
 
 def create_bricks_below_paddle():
     bricks = {}
+    total_bricks = 0
     for column in range(c.COLUMNS):
         brick = Brick(
             style=1,
@@ -94,7 +97,8 @@ def create_bricks_below_paddle():
             col=column,
         )
         bricks[brick.id] = brick
-    return bricks
+    total_bricks += 1
+    return bricks, total_bricks
 
 
 if __name__ == "__main__":

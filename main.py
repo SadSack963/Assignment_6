@@ -9,6 +9,7 @@ import level_layout
 
 from turtle import Screen
 from time import sleep
+import time
 
 
 def new_level():
@@ -20,10 +21,10 @@ def new_level():
 
     :return: brick_layout: New brick array
     """
-    global count_1, count_2
+    global count_1, count_2, total_bricks, initial_bricks
     count_1, count_2 = 0, 0
     layout = level_layout.levels[level]["layout"]
-    brick_layout = create_bricks(layout)
+    brick_layout, total_bricks = create_bricks(layout)
     screen.bgpic(f"images/backgrounds/{level_layout.levels[level]['background']}.gif")
     ball.reset_state()
     paddle.reset_state()
@@ -32,6 +33,7 @@ def new_level():
     if not instructions:
         pause_game()
     screen.update()
+    initial_bricks = total_bricks
     return brick_layout
 
 
@@ -75,12 +77,14 @@ def ball_brick_collision():
 
         :param brick: brick which has been hit.
         """
+        global total_bricks
         brick.hits += 1
         scoreboard.increase_score(amount=1, instructions=instructions)
         if brick.hits >= brick.hits_required:
             brick_drop_item(brick)
             brick.destroy()
             current_bricks.pop(brick.id)  # Remove the brick from the array
+            total_bricks -= 1
 
     def check_neighbour(id):
         """
@@ -207,6 +211,7 @@ def paddle_drop_item_collision(item):
 
 
 def special_item(item):
+    global total_bricks
     match item.style:
         case "+10 points":
             scoreboard.increase_score(amount=10, instructions=instructions)
@@ -218,7 +223,8 @@ def special_item(item):
             for brick in brick_array.values():
                 if brick.id[0] == 18:
                     brick.hideturtle()
-            new_bricks = create_bricks_below_paddle()
+            new_bricks, total_new_bricks = create_bricks_below_paddle()
+            total_bricks += total_new_bricks
             brick_array.update(new_bricks)
 
 
@@ -316,7 +322,8 @@ count_1, count_2 = 0, 0
 game_speed = 300000
 pause = False
 instructions = True
-
+total_bricks = 0
+initial_bricks = 0
 # Define objects
 notify_normal = Messenger(
     fontcolor="white",
@@ -362,6 +369,11 @@ screen.listen()
 """
 go = True
 while go:
+    """
+    Total loop time (excluding the time delay at the bottom) 
+    varies from 15ms to 3ms depending upon the number of turtles on the screen.
+    
+    """
     # Move the ball
     ball.move(instructions)
     if not instructions and ball.ycor() <= -c.EDGE_TB:
@@ -375,6 +387,7 @@ while go:
     ball_paddle_collision()
 
     # Detect collision with bricks
+    # Collision detection is about 0.5ms regardless of number of bricks
     brick_array, bricks_destroyed = ball_brick_collision()
 
     # Move the dropped items and check for collisions
@@ -401,11 +414,20 @@ while go:
                 level += 1
             brick_array = new_level()
 
+    # Screen update time varies from about 13ms with a lot of bricks
+    #   down to about 2ms with very few bricks on screen
     screen.update()
 
     # Loop to control game speed - much better than time.sleep()!
-    for _ in range(game_speed):
+    # For game_speed = 300000, loop time is about 10ms
+    # Use the number of bricks to give a constant game speed.
+    # This keeps the game loop time to approximately 15 to 18 milliseconds
+    # with game_speed set to 300000.
+    loop_delay = int(game_speed * (1 - total_bricks / 100))
+
+    for _ in range(loop_delay):
         pass
+
 
 screen.update()
 
