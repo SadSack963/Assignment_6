@@ -5,13 +5,13 @@ import constants as c
 from turtle import Turtle, Screen
 from time import sleep
 
-VELOCITY = 12
+VELOCITY = 6
 
 
 class Paddle:
     def __init__(self):
         self.repeat = False  # Fast Key Repeat
-        self.repeat_rate = 20  # milliseconds
+        self.repeat_rate = 10  # milliseconds
         self.segments = []
         self.create_paddle()
 
@@ -55,7 +55,7 @@ class Paddle:
         Move the paddle left (heading 180), until it hits the edge of the screen.
         If Key Repeat is ON, set an event timer to run this function again.
         """
-        if self.segments[0].xcor() > 7 - c.EDGE_LR:
+        if self.segments[0].xcor() > 4 - c.EDGE_LR:
             self.move(180)
         if self.repeat:
             Screen().ontimer(self.move_left, self.repeat_rate)
