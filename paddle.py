@@ -22,7 +22,7 @@ class Paddle:
         """
         for index in range(-2, 3):
             segment = Turtle()
-            segment.color("black")
+            segment.color("red4")
             segment.shape("square")
             segment.penup()
             segment.goto(index * 20, 60 - c.HEIGHT // 2)

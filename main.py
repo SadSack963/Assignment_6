@@ -9,7 +9,6 @@ import level_layout
 
 from turtle import Screen
 from time import sleep
-import time
 
 
 def new_level():
@@ -20,11 +19,10 @@ def new_level():
     Reset the ball and paddle.
 
     :return: brick_layout: New brick array
+    :return: total_bricks: Number of bricks displayed
     """
-    global count_1, count_2, total_bricks, initial_bricks
-    count_1, count_2 = 0, 0
     layout = level_layout.levels[level]["layout"]
-    brick_layout, total_bricks = create_bricks(layout)
+    brick_layout, bricks_created = create_bricks(layout)
     screen.bgpic(f"images/backgrounds/{level_layout.levels[level]['background']}.gif")
     ball.reset_state()
     paddle.reset_state()
@@ -33,8 +31,7 @@ def new_level():
     if not instructions:
         pause_game()
     screen.update()
-    initial_bricks = total_bricks
-    return brick_layout
+    return brick_layout, bricks_created
 
 
 def level_winner(current_level):
@@ -44,7 +41,10 @@ def level_winner(current_level):
 
 
 def game_winner():
-    win_message.message("You have beaten the game!\nWell done!")
+    win_message.message(
+        "You have beaten the game!\nWell done!\n"
+        "CLICK THE SCREEN TO EXIT.",
+    )
 
 
 def ball_paddle_collision():
@@ -55,7 +55,6 @@ def ball_paddle_collision():
     if ball.ycor() < (80 - c.HEIGHT / 2) and (ball.heading() < 0 or ball.heading() > 180):
         for segment in paddle.segments:
             if ball.distance(segment) <= 20:
-                print(ball.heading())
                 ball.bounce_y(segment.id)
                 break
 
@@ -69,33 +68,33 @@ def ball_brick_collision():
     :return: Array with brick removed, level complete flag
 
     """
-    def brick_hit(brick):
+    def brick_hit(hit_brick):
         """
         The ball has hit this brick.
         Increment the score.
         Remove it from the array if the brick has been hit sufficient times.
 
-        :param brick: brick which has been hit.
+        :param hit_brick: brick which has been hit.
         """
         global total_bricks
-        brick.hits += 1
+        hit_brick.hits += 1
         scoreboard.increase_score(amount=1, instructions=instructions)
-        if brick.hits >= brick.hits_required:
-            brick_drop_item(brick)
-            brick.destroy()
-            current_bricks.pop(brick.id)  # Remove the brick from the array
+        if hit_brick.hits >= hit_brick.hits_required:
+            brick_drop_item(hit_brick)
+            hit_brick.destroy()
+            current_bricks.pop(hit_brick.id)  # Remove the brick from the array
             total_bricks -= 1
 
-    def check_neighbour(id):
+    def check_neighbour(brick_id):
         """
         Check brick with the given ID to see if it is visible.
         If so, then this is a simultaneous hit - remove the brick from the array.
 
-        :param id: location of brick in array
+        :param brick_id: location of brick in array
         :return: boolean - brick visible
         """
         try:
-            neighbouring_brick = brick_array[id]
+            neighbouring_brick = brick_array[brick_id]
             if neighbouring_brick.isvisible():
                 brick_hit(neighbouring_brick)
                 return True
@@ -187,11 +186,13 @@ def ball_drop_item_collision(item):
     Perform the item's special operation, and make the item in the list available again.
 
     :param item: item from drop_list
-    :type item:
+    :type item: DropObject
     """
     if ball.distance(item) < 20:
+        location = (ball.xcor(), ball.ycor() - 30)
+        ball_message.message("+50\nbonus", location, count=70)
         scoreboard.increase_score(amount=50, instructions=instructions)
-        special_item(item)
+        do_special_item_operation(item)
         item.destroy()
 
 
@@ -201,30 +202,44 @@ def paddle_drop_item_collision(item):
     Perform the item's special operation, and make the item in the list available again.
 
     :param item: item from drop_list
-    :type item:
+    :type item: DropObject
     """
     for segment in paddle.segments:
         if segment.distance(item) < 20:
             scoreboard.increase_score(amount=1, instructions=instructions)
-            special_item(item)
+            do_special_item_operation(item)
             item.destroy()
 
 
-def special_item(item):
+def do_special_item_operation(item):
+    """
+    Perform the item's special operation.
+
+    :param item: item from drop_list
+    :type item: DropObject
+    """
     global total_bricks
+    drop_message.message(item.style, item.position(), count=70)
     match item.style:
-        case "+10 points":
+        case "+10\npoints":
+            # Increase score by 10 points
             scoreboard.increase_score(amount=10, instructions=instructions)
-        case "+1 life":
+        case "-10\npoints":
+            # Decrease score by 10 points
+            scoreboard.increase_score(amount=-10, instructions=instructions)
+        case "+1\nlife":
+            # Gain a life
             scoreboard.increase_lives(1)
-        case "-1 life":
+        case "-1\nlife":
+            # Lose a life
             scoreboard.increase_lives(-1)
-        case "bricks":
+        case "wall":
+            # Create a wall below the paddle
             for brick in brick_array.values():
                 if brick.id[0] == 18:
                     brick.hideturtle()
-            new_bricks, total_new_bricks = create_bricks_below_paddle()
-            total_bricks += total_new_bricks
+            new_bricks, bricks_created = create_bricks_below_paddle()
+            total_bricks += bricks_created
             brick_array.update(new_bricks)
 
 
@@ -248,12 +263,12 @@ def start_game():
     Turn off instructions. Set to Level 1 and clear the screen.
     Display the new brick layout.
     """
-    global instructions, level, brick_array, count_1, count_2
+    global instructions, level, brick_array, total_bricks
     if instructions:
         instructions = False
         level = 1
         clear_screen()
-        brick_array = new_level()
+        brick_array, total_bricks = new_level()
         scoreboard.reset_state()
 
 
@@ -267,7 +282,7 @@ def clear_screen():
         brick.hideturtle()
     ball.reset_state()
     paddle.reset_state()
-    notify_normal.message_clear()
+    notify_normal.reset_state()
 
 
 def pause_game():
@@ -281,7 +296,7 @@ def pause_game():
     if not pause:
         pause = True
         notify_normal.message(message="PAUSED")
-        loop()
+        pause_loop()
     else:
         pause = False
         notify_normal.message(message="3")
@@ -290,18 +305,39 @@ def pause_game():
         sleep(0.5)
         notify_normal.message(message="1")
         sleep(0.5)
-        notify_normal.message_clear()
+        notify_normal.reset_state()
         if instructions:
             display_instructions()
 
 
-def loop():
+def pause_loop():
     """
     Do nothing while in pause.
     """
     while pause:
         sleep(0.1)
         screen.update()
+
+
+def check_lives():
+    """
+    Check if number of lives remaining is zero.
+    Display a message - LOSER.
+
+    :return: True if all lives have been used, else False.
+    :rtype: boolean
+    """
+    if scoreboard.current_lives <= 0:
+        notify_normal.message(
+            message="!! LOSER !!\n"
+                    "All of your lives have been used.\n"
+                    "Better luck next time...\n"
+                    "CLICK THE SCREEN TO EXIT.",
+            position=(0, -50),
+        )
+
+        return True
+    return False
 
 
 """
@@ -317,13 +353,11 @@ screen.bgcolor("black")
 screen.tracer(0)
 
 # Variables
-level = 0
-count_1, count_2 = 0, 0
-game_speed = 300000
+level = 0  # Demo level
+game_speed = 300000  # Used to control the Game Loop Time
 pause = False
 instructions = True
-total_bricks = 0
-initial_bricks = 0
+
 # Define objects
 notify_normal = Messenger(
     fontcolor="white",
@@ -336,12 +370,22 @@ scoreboard = ScoreBoard()
 win_message = Messenger(
     fontcolor="red",
     fontsize=20,
-    fonttype="italic"
+    fonttype="bold italic"
 )
-icon_names = get_icons("images/icons/")
+drop_message = Messenger(
+    fontcolor="white",
+    fontsize=10,
+    fonttype="bold"
+)
+ball_message = Messenger(
+    fontcolor="white",
+    fontsize=10,
+    fonttype="bold"
+)
+icon_names = get_icons(folder="images/icons/")
 drop_list = [DropObject() for _ in range(5)]
 
-brick_array = new_level()
+brick_array, total_bricks = new_level()
 display_instructions()
 
 # Fast Key Repeat bindings
@@ -378,10 +422,21 @@ while go:
     ball.move(instructions)
     if not instructions and ball.ycor() <= -c.EDGE_TB:
         scoreboard.increase_lives(-1)
+        no_lives = check_lives()
+        # Check if all lives used up
+        if no_lives:
+            go = False
+            break
         paddle.reset_state()
         ball.reset_state()
         pause_game()
         continue
+
+    # Clear the message after a delay
+    if ball_message.active:
+        ball_message.count -= 1
+        if ball_message.count <= 0:
+            ball_message.reset_state()
 
     # Detect ball collision with paddle
     ball_paddle_collision()
@@ -398,6 +453,17 @@ while go:
             drop_item.move()
             ball_drop_item_collision(drop_item)
             paddle_drop_item_collision(drop_item)
+            # Check if all lives used up
+            no_lives = check_lives()
+            if no_lives:
+                go = False
+                break
+
+    # Clear the message after a delay
+    if drop_message.active:
+        drop_message.count -= 1
+        if drop_message.count <= 0:
+            drop_message.reset_state()
 
     # Check to see if the level is complete
     if bricks_destroyed and not drop_items_in_use:
@@ -412,7 +478,7 @@ while go:
             level_winner(level)
             if not instructions:
                 level += 1
-            brick_array = new_level()
+            brick_array, total_bricks = new_level()
 
     # Screen update time varies from about 13ms with a lot of bricks
     #   down to about 2ms with very few bricks on screen

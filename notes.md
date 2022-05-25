@@ -68,6 +68,9 @@
 
 ## Bugs
 <ol>
-<li>If the ball hits at the bottom corner, then sometimes it reappears in the bottom right corner! 
-<p>I have also seen it disappear from the bottom right corner and reappear in the bottom left corner!
-<li>Sometimes the ball gets stuck between the bricks and the wall (particularly on the right wall), and it destroys a whole column of bricks. I have also seen this happen along the top of the screen, but not recently. 
+<li>FIXED - If the ball hits at the bottom corner, then sometimes it reappears in the bottom right corner! 
+<p>FIXED - I have also seen it disappear from the bottom right corner and reappear in the bottom left corner!
+</li>
+<li>Sometimes the ball gets stuck between the bricks and the wall, and it destroys a whole column of bricks. I have also seen this happen along the top edge of the screen, but not for a long time. It's quite rare and is simply a result of bouncing between the edge of the screen and the bricks. I decided to leave this active and call it a feature, since it is so rare and is a nice little bonus when it does happen 😁.
+</li>
+</ol>

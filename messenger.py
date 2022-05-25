@@ -12,18 +12,25 @@ class Messenger(Turtle):
         self.hideturtle()
         self.pencolor(fontcolor)
         self.font = ("Comic Sans", fontsize, fonttype)
+        self.active = False
+        self.count = 0
 
-    def message(self, message, position: tuple = None):
+    def message(self, message, position: tuple = None, count=0):
         """
-        Displays message for the given time.
+        Displays message at given position.
+        Set the message active, and set the count (used externally to clear the message, e.g. after a delay).
         """
-        self.clear()
+        self.reset_state()
+        self.count = count
         if position:
             self.setposition(position)
         self.write(arg=message, move=False, align="center", font=self.font)
+        self.active = True
 
-    def message_clear(self):
+    def reset_state(self):
         """
-        Clear all previous messages
+        Clear all messages
         """
         self.clear()
+        self.active = False
+        self.count = 0

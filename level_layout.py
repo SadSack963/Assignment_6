@@ -14,7 +14,7 @@ brick_types = {
     2: {
         "title": "flashing",
         "hits": 1,
-        "drop": "+10 points",
+        "drop": "+10\npoints",
         "sprite": "star",
         "color": [
             "grey0",
@@ -66,7 +66,7 @@ brick_types = {
     5: {
         "title": "brick_row",
         "hits": 1,
-        "drop": "bricks",
+        "drop": "wall",
         "sprite": "bricks",
         "color": [
             "grey70",
@@ -75,7 +75,7 @@ brick_types = {
     6: {
         "title": "less_points",
         "hits": 1,
-        "drop": "-10 points",
+        "drop": "-10\npoints",
         "sprite": "",
         "color": [
         ],
@@ -83,7 +83,7 @@ brick_types = {
     7: {
         "title": "more_lives",
         "hits": 2,
-        "drop": "+1 life",
+        "drop": "+1\nlife",
         "sprite": "heart",
         "color": [
             "chartreuse4",
@@ -99,7 +99,7 @@ brick_types = {
     8: {
         "title": "less_lives",
         "hits": 2,
-        "drop": "-1 life",
+        "drop": "-1\nlife",
         "sprite": "skull",
         "color": [
             "red",
@@ -208,7 +208,7 @@ brick_types = {
 
 levels = {
     # Maximum 19 rows (0 to 18)
-    0: {"background": "gradient_1",
+    0: {"background": "0",
         "layout": [
             [1, 1, 1, 5, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -225,13 +225,13 @@ levels = {
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ],
         },
-    1: {"background": "gradient_1",
+    1: {"background": "1",
         "layout": [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 0, 0, 0, 0, 1, 1, 0],
@@ -239,7 +239,7 @@ levels = {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ],
         },
-    2: {"background": "gradient_2",
+    2: {"background": "2",
         "layout": [
             [1, 0, 0, 1, 1, 1, 1, 0, 0, 1],
             [0, 0, 3, 0, 0, 0, 0, 1, 0, 0],
@@ -251,7 +251,7 @@ levels = {
             [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
         ],
         },
-    3: {"background": "gradient_1",
+    3: {"background": "3",
         "layout": [
             [1, 1, 1, 3, 3, 3, 3, 1, 1, 1],
             [1, 1, 1, 0, 2, 2, 0, 1, 1, 1],
@@ -261,7 +261,7 @@ levels = {
             [0, 0, 0, 3, 0, 0, 3, 0, 0, 0],
         ],
         },
-    4: {"background": "gradient_2",
+    4: {"background": "4",
         "layout": [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
