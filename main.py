@@ -78,7 +78,7 @@ def ball_brick_collision():
         """
         global total_bricks
         hit_brick.hits += 1
-        scoreboard.increase_score(amount=1, instructions=instructions)
+        scoreboard.adjust_score(amount=1, instructions=instructions)
         if hit_brick.hits >= hit_brick.hits_required:
             brick_drop_item(hit_brick)
             hit_brick.destroy()
@@ -169,7 +169,7 @@ def brick_drop_item(brick):
     :param brick: The brick being destroyed
     :type brick:
     """
-    if brick.style in [2, 5, 7, 8]:
+    if brick.style in c.SPECIAL_BRICKS:
         index = get_drop_object()
         if index is not None:
             drop_list[index].style = brick.drop_item
@@ -191,7 +191,7 @@ def ball_drop_item_collision(item):
     if ball.distance(item) < 20:
         location = (ball.xcor(), ball.ycor() - 30)
         ball_message.message("+50\nbonus", location, count=70)
-        scoreboard.increase_score(amount=50, instructions=instructions)
+        scoreboard.adjust_score(amount=50, instructions=instructions)
         do_special_item_operation(item)
         item.destroy()
 
@@ -206,7 +206,7 @@ def paddle_drop_item_collision(item):
     """
     for segment in paddle.segments:
         if segment.distance(item) < 20:
-            scoreboard.increase_score(amount=1, instructions=instructions)
+            scoreboard.adjust_score(amount=1, instructions=instructions)
             do_special_item_operation(item)
             item.destroy()
 
@@ -223,16 +223,16 @@ def do_special_item_operation(item):
     match item.style:
         case "+10\npoints":
             # Increase score by 10 points
-            scoreboard.increase_score(amount=10, instructions=instructions)
+            scoreboard.adjust_score(amount=10, instructions=instructions)
         case "-10\npoints":
             # Decrease score by 10 points
-            scoreboard.increase_score(amount=-10, instructions=instructions)
+            scoreboard.adjust_score(amount=-10, instructions=instructions)
         case "+1\nlife":
             # Gain a life
-            scoreboard.increase_lives(1)
+            scoreboard.adjust_lives(1)
         case "-1\nlife":
             # Lose a life
-            scoreboard.increase_lives(-1)
+            scoreboard.adjust_lives(-1)
         case "wall":
             # Create a wall below the paddle
             for brick in brick_array.values():
@@ -268,8 +268,8 @@ def start_game():
         instructions = False
         level = 1
         clear_screen()
-        brick_array, total_bricks = new_level()
         scoreboard.reset_state()
+        brick_array, total_bricks = new_level()
 
 
 def clear_screen():
@@ -356,7 +356,6 @@ screen.tracer(0)
 level = 0  # Demo level
 game_speed = 300000  # Used to control the Game Loop Time
 pause = False
-instructions = True
 
 # Define objects
 notify_normal = Messenger(
@@ -385,6 +384,8 @@ ball_message = Messenger(
 icon_names = get_icons(folder="images/icons/")
 drop_list = [DropObject() for _ in range(5)]
 
+# Start with the Instructions screen
+instructions = True
 brick_array, total_bricks = new_level()
 display_instructions()
 
@@ -421,7 +422,7 @@ while go:
     # Move the ball
     ball.move(instructions)
     if not instructions and ball.ycor() <= -c.EDGE_TB:
-        scoreboard.increase_lives(-1)
+        scoreboard.adjust_lives(-1)
         no_lives = check_lives()
         # Check if all lives used up
         if no_lives:

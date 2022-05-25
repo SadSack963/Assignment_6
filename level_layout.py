@@ -14,8 +14,8 @@ brick_types = {
     2: {
         "title": "flashing",
         "hits": 1,
-        "drop": "+10\npoints",
-        "sprite": "star",
+        "drop": "+10\nPoints",
+        "sprite": "star_up",
         "color": [
             "grey0",
             "grey10",
@@ -64,10 +64,10 @@ brick_types = {
         ],
     },
     5: {
-        "title": "brick_row",
+        "title": "brick_wall",
         "hits": 1,
-        "drop": "wall",
-        "sprite": "bricks",
+        "drop": "Wall",
+        "sprite": "wall",
         "color": [
             "grey70",
         ],
@@ -75,15 +75,16 @@ brick_types = {
     6: {
         "title": "less_points",
         "hits": 1,
-        "drop": "-10\npoints",
-        "sprite": "",
+        "drop": "-10\nPoints",
+        "sprite": "star_down",
         "color": [
+            "magenta"
         ],
     },
     7: {
         "title": "more_lives",
         "hits": 2,
-        "drop": "+1\nlife",
+        "drop": "+1\nLife",
         "sprite": "heart",
         "color": [
             "chartreuse4",
@@ -99,7 +100,7 @@ brick_types = {
     8: {
         "title": "less_lives",
         "hits": 2,
-        "drop": "-1\nlife",
+        "drop": "-1\nLife",
         "sprite": "skull",
         "color": [
             "red",
@@ -112,23 +113,24 @@ brick_types = {
     9: {
         "title": "gun",
         "hits": 1,
-        "drop": "gun",
-        "sprite": "",
+        "drop": "Shoot\nNow!",
+        "sprite": "bullet",
         "color": [
         ],
     },
     10: {
         "title": "steel ball",
         "hits": 1,
-        "drop": "punch through bricks",
-        "sprite": "",
+        "drop": "Steel\nBall",
+        "sprite": "steel",
         "color": [
+            "SteelBlue3"
         ],
     },
     11: {
-        "title": "boundary",
+        "title": "",
         "hits": 1,
-        "drop": "bricks below paddle",
+        "drop": "",
         "sprite": "",
         "color": [
         ],
@@ -210,11 +212,11 @@ levels = {
     # Maximum 19 rows (0 to 18)
     0: {"background": "0",
         "layout": [
-            [1, 1, 1, 5, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 2, 2, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [2, 5, 1, 7, 1, 8, 1, 7, 1, 1],
+            [1, 7, 1, 5, 1, 1, 1, 1, 6, 1],
+            [1, 3, 1, 1, 1, 8, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1, 2, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],

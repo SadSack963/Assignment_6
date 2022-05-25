@@ -21,7 +21,7 @@ class ScoreBoard:
             fontsize=10,
         )
 
-    def increase_score(self, amount, instructions=False):
+    def adjust_score(self, amount, instructions=False):
         """
         Increment / Decrement the score.
 
@@ -39,7 +39,7 @@ class ScoreBoard:
             with open("max_score.txt", mode="w") as fp:
                 fp.write(str(self.max_score))
 
-    def increase_lives(self, amount):
+    def adjust_lives(self, amount):
         """
         Increment / Decrement the lives.
 

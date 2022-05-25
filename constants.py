@@ -8,8 +8,8 @@ EDGE_TB = HEIGHT / 2 - 12
 COLUMNS = 10
 STRETCH = 3
 COLORS = ["grey", "red", "orange", "yellow", "green", "blue", "midnight blue", "violet", "gold", "black", "white", ]
-COLORS_CYCLE = ["grey0", "grey10", "grey20", "grey30", "grey40", "grey50", "grey60", "grey70", "grey80", "grey90", "grey100", "grey90", "grey80", "grey70", "grey60", "grey50", "grey40", "grey30", "grey20", "grey10",
-                "grey0",]
+SPECIAL_BRICKS = [2, 5, 6, 7, 8]
+
 COLORS_ALPHABETIC = [
     "alice blue", "AliceBlue", "antique white", "AntiqueWhite", "AntiqueWhite1", "AntiqueWhite2", "AntiqueWhite3",
     "AntiqueWhite4", "aquamarine", "aquamarine1", "aquamarine2", "aquamarine3", "aquamarine4", "azure", "azure1",
