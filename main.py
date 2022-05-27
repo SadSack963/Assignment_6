@@ -198,7 +198,7 @@ def ball_drop_item_collision(item):
 
 def paddle_drop_item_collision(item):
     """
-    If the drop item is hit by the paddle, then increment the score.
+    If the drop item is hit by the paddle, then add a bonus of 10 points to the score.
     Perform the item's special operation, and make the item in the list available again.
 
     :param item: item from drop_list
@@ -206,7 +206,7 @@ def paddle_drop_item_collision(item):
     """
     for segment in paddle.segments:
         if segment.distance(item) < 20:
-            scoreboard.adjust_score(amount=1, instructions=instructions)
+            scoreboard.adjust_score(amount=5, instructions=instructions)
             do_special_item_operation(item)
             item.destroy()
 
@@ -221,19 +221,19 @@ def do_special_item_operation(item):
     global total_bricks
     drop_message.message(item.style, item.position(), count=70)
     match item.style:
-        case "+10\npoints":
+        case "+10\nPoints":
             # Increase score by 10 points
-            scoreboard.adjust_score(amount=10, instructions=instructions)
-        case "-10\npoints":
+            scoreboard.adjust_score(amount=25, instructions=instructions)
+        case "-10\nPoints":
             # Decrease score by 10 points
-            scoreboard.adjust_score(amount=-10, instructions=instructions)
-        case "+1\nlife":
+            scoreboard.adjust_score(amount=-25, instructions=instructions)
+        case "+1\nLife":
             # Gain a life
             scoreboard.adjust_lives(1)
-        case "-1\nlife":
+        case "-1\nLife":
             # Lose a life
             scoreboard.adjust_lives(-1)
-        case "wall":
+        case "Wall":
             # Create a wall below the paddle
             for brick in brick_array.values():
                 if brick.id[0] == 18:
@@ -241,6 +241,9 @@ def do_special_item_operation(item):
             new_bricks, bricks_created = create_bricks_below_paddle()
             total_bricks += bricks_created
             brick_array.update(new_bricks)
+        case "Shoot\nNow!":
+            # ToDo: Add gun to paddle
+            pass
 
 
 def display_instructions():
@@ -248,10 +251,13 @@ def display_instructions():
     Display instruction message on screen
     """
     notify_normal.message(
-        message="Use the A Key or the Left cursor key\nto move the paddle to the left.\n"
-                "Use the D key or the Right cursor key\nto move the paddle to the right.\n"
-                "You will lose a life\nif the ball goes past the paddle.\n\n"
-                "Press P, S or Down cursor key to pause the game.\n\n"
+        message="A, Left\t- move paddle left.\n"
+                "D, Right\t- move paddle right.\n"
+                "W, Up\t- fire gun.\n"
+                "S, Down\t- pause the game.\n\n"
+                "Lose a life if the if the ball goes off the screen.\n"
+                "Special bricks can drop bonuses or penalties.\n"
+                "Bonus points if the ball hits a drop item.\n\n"
                 "PRESS SPACE TO START",
         position=(0, -120),
     )
@@ -266,7 +272,7 @@ def start_game():
     global instructions, level, brick_array, total_bricks
     if instructions:
         instructions = False
-        level = 1
+        level = 6  # TODO: SET TEST LEVEL (Reset to 1 for final game)
         clear_screen()
         scoreboard.reset_state()
         brick_array, total_bricks = new_level()
@@ -401,7 +407,6 @@ screen.onkeypress(lambda: paddle.start_repeat(paddle.move_right) if not pause el
 screen.onkeyrelease(paddle.stop_repeat, "Right")
 
 screen.onkeyrelease(start_game, "space")
-screen.onkeyrelease(pause_game, "p")
 screen.onkeyrelease(pause_game, "s")
 screen.onkeyrelease(pause_game, "Down")
 
@@ -426,8 +431,11 @@ while go:
         no_lives = check_lives()
         # Check if all lives used up
         if no_lives:
-            go = False
-            break
+            if instructions:
+                scoreboard.reset_state()
+            else:
+                go = False
+                break
         paddle.reset_state()
         ball.reset_state()
         pause_game()
@@ -457,8 +465,11 @@ while go:
             # Check if all lives used up
             no_lives = check_lives()
             if no_lives:
-                go = False
-                break
+                if instructions:
+                    scoreboard.reset_state()
+                else:
+                    go = False
+                    break
 
     # Clear the message after a delay
     if drop_message.active:

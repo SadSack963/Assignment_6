@@ -8,7 +8,7 @@ EDGE_TB = HEIGHT / 2 - 12
 COLUMNS = 10
 STRETCH = 3
 COLORS = ["grey", "red", "orange", "yellow", "green", "blue", "midnight blue", "violet", "gold", "black", "white", ]
-SPECIAL_BRICKS = [2, 5, 6, 7, 8]
+SPECIAL_BRICKS = [2, 3, 5, 7, 8, 9]
 
 COLORS_ALPHABETIC = [
     "alice blue", "AliceBlue", "antique white", "AntiqueWhite", "AntiqueWhite1", "AntiqueWhite2", "AntiqueWhite3",
