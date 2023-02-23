@@ -6,6 +6,7 @@ from scoring import ScoreBoard
 from drop_objects import DropObject, get_icons
 import constants as c
 import level_layout
+from brick_types import brick_types
 
 from turtle import Screen
 from time import sleep
@@ -173,7 +174,7 @@ def brick_drop_item(brick):
         index = get_drop_object()
         if index is not None:
             drop_list[index].style = brick.drop_item
-            file = level_layout.brick_types[brick.style]["sprite"]
+            file = brick_types[brick.style]["sprite"]
             drop_list[index].shape(f"images/icons/{file}.gif")
             drop_list[index].setheading(-90)
             drop_list[index].goto(brick.location)
@@ -272,7 +273,7 @@ def start_game():
     global instructions, level, brick_array, total_bricks
     if instructions:
         instructions = False
-        level = 6  # TODO: SET TEST LEVEL (Reset to 1 for final game)
+        level = 2  # TODO: THIS SETS THE TEST LEVEL (Reset to 1 for final game)
         clear_screen()
         scoreboard.reset_state()
         brick_array, total_bricks = new_level()

@@ -1,5 +1,5 @@
 import constants as c
-from level_layout import brick_types
+from brick_types import brick_types
 
 from turtle import Turtle, Screen
 from random import randint
