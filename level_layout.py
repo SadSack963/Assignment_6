@@ -7,19 +7,19 @@ index   type            hits    points
 2       flashing        1       100
 3       less_points     1       -10
 4       indestructible  0       5 per hit
-5       brick_wall      1       1
+5       brick_wall      1       250
 6       multi-hit       5       10 per hit
-7       more_lives      2       1
-8       less_lives      2       1
-9       bullet          1       1
-10      steel_ball      1       1
-11      explode         1       1
+7       more_lives      2       500
+8       less_lives      2       -100
+9       bullet          1       200
+10      steel_ball      1       50
+11      explode         1       1000
 12      expand_paddle   1       100
 13      shrink_paddle   1       -100
 14      move_brick      1       50
 15      invisible       3       1000
-16      fast_ball       1       1
-17      slow_ball       1       1
+16      fast_ball       1       -50
+17      slow_ball       1       50
 18
 19
 20

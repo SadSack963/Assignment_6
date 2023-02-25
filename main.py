@@ -273,7 +273,7 @@ def start_game():
     global instructions, level, brick_array, total_bricks
     if instructions:
         instructions = False
-        level = 2  # TODO: THIS SETS THE TEST LEVEL (Reset to 1 for final game)
+        level = 3  # TODO: THIS SETS THE TEST LEVEL (Reset to 1 for final game)
         clear_screen()
         scoreboard.reset_state()
         brick_array, total_bricks = new_level()

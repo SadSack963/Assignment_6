@@ -77,6 +77,7 @@ def create_bricks(layout_array: list):
     for row in range(rows):
         for column in range(c.COLUMNS):
             if layout_array[row][column] > 0:
+                # Create a Turtle object that gets displayed on the screen
                 brick = Brick(
                     style=layout_array[row][column],
                     row=row,
@@ -84,6 +85,12 @@ def create_bricks(layout_array: list):
                 )
                 bricks[brick.id] = brick
                 total_bricks += 1
+            else:
+                try:
+                    bricks[(row, column)].destroy()
+                    print(f"Destroyed brick at {(row, column)}")
+                except KeyError:
+                    pass
     return bricks, total_bricks
 
 
