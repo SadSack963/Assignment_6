@@ -1,0 +1,8 @@
+.idea
+.git
+__pycache__
+venv*
+*_OLD*
+test*
+max_score.txt
+
